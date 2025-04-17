@@ -165,6 +165,47 @@ function tambah($data, $foto) {
     return mysqli_affected_rows($conn);
 }
 
+
+function myfunc($data) {
+    // handle func upload image
+    $filename =$data["name"];
+    $filesize =$data["size"];
+    $tmp_name =$data["tmp_name"];
+
+    // cek yang diupload formatnya benar
+    $valid_ext_file = ["jpg", "jpeg", "png", "webp"];
+    $ext_file = explode(".", $filename);
+    $ext_file = strtolower(end($ext_file));
+    if ( !in_array($ext_file, $valid_ext_file) ) {
+        // TODO : CREATE ALERT
+        echo "EXTENSI FILE SALAH";
+        return false;
+    }
+
+    // cek file size
+    // max 2mb
+    // dalam byte
+    if ( $filesize > 2500000 ) {
+        // TODO : CREATE ALERT
+        echo "EXTENSI FILE TERLALU BESAR> MAX 2MB";
+        return false;
+    }
+    
+
+    // relatif terhadap file ini
+    // generate nama file baru
+    $filename = explode(".", $filename)[0];
+    $filename = $filename . '_' . uniqid() . '.' . $ext_file;
+    $destination = __DIR__ . '/../uploads/img/' . $filename;
+    $result = move_uploaded_file($tmp_name, $destination);
+    // return string nama fil foto untuk diinsert ke db
+    if ( $result ) {
+        return $filename;
+    } else {
+        return false;
+    }
+}
+
 function foto_handlefunc($data) {
     // handle func upload image
     $filename = $_FILES["foto"]["name"];
@@ -173,7 +214,7 @@ function foto_handlefunc($data) {
     $error = $_FILES["foto"]["error"];
     
     // cek apakah gamabr diupload
-    // 4 => tidak ad afile yang diupload
+    // 4 => tidak ada file yang diupload
     if ( $error === 4 ) {
         // TODO: EDIT
         echo 'UPLOAD GAMBAR';
@@ -190,7 +231,7 @@ function foto_handlefunc($data) {
         return false;
     }
 
-    // cek file saze
+    // cek file size
     // max 2mb
     // dalam byte
     if ( $filesize > 2500000 ) {
@@ -233,7 +274,7 @@ function edit($id){
     }
 }
 
-function update($data, $foto, $id) {
+function update($data, $id, $foto = null) {
     global $conn;
 
     $nim = htmlspecialchars($data['nim'], ENT_QUOTES, 'UTF-8');
@@ -250,28 +291,34 @@ function update($data, $foto, $id) {
     $jenjang = htmlspecialchars($data['jenjang'], ENT_QUOTES, 'UTF-8');
     $status = htmlspecialchars($data['status'], ENT_QUOTES, 'UTF-8');
 
-    $foto;
+    
 
-    mysqli_query($conn,
-    "
-    UPDATE students SET
-    nama = '$nama',
-    nim = '$nim',
-    alamat = '$alamat',
-    kota = '$kota',
-    provinsi = '$provinsi',
-    telepon = '$telepon',
-    email = '$email',
-    jurusan = '$jurusan',
-    angkatan = '$angkatan',
-    jenis_kelamin = '$jenis_kelamin',
-    tanggal_lahir = '$tanggal_lahir',
-    jenjang = '$jenjang',
-    foto = '$foto',
-    status = '$status'
-    WHERE id = '$id'
-    "
-    );
+    $query = "
+        UPDATE students SET
+        nama = '$nama',
+        nim = '$nim',
+        alamat = '$alamat',
+        kota = '$kota',
+        provinsi = '$provinsi',
+        telepon = '$telepon',
+        email = '$email',
+        jurusan = '$jurusan',
+        angkatan = '$angkatan',
+        jenis_kelamin = '$jenis_kelamin',
+        tanggal_lahir = '$tanggal_lahir',
+        jenjang = '$jenjang',
+        status = '$status'
+    ";
+
+
+    // hanya update kolom `foto` jika ada foto baru
+    if ($foto !== null) {
+        $query .= ", foto = '$foto'";
+    }
+
+    $query .= " WHERE id = '$id'";
+
+    mysqli_query($conn, $query);
     return mysqli_affected_rows($conn);
 }
 

@@ -1,6 +1,10 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
 session_start();
+require_once("helper/helper.php");
 
 // jika tidak ada session == belum login
 if ( !isset($_SESSION["login"]) ){
@@ -12,15 +16,8 @@ if ( !isset($_SESSION["login"]) ){
     exit;
 }
 
-require_once("helper/helper.php");
 
 $id = $_GET["id"];
-
-// if ( !$id ) {
-//     echo 'TIDAK ADA USER DENGAN ID:' . $id;
-//     return false;
-// }
-
 
 $result = edit($id);
  if ( !$result) {
@@ -107,32 +104,112 @@ $result = edit($id);
  }
 
 
-if (isset($_POST["update"])) {
-    $foto;
-    // jika ada foto diupload
-    if ( isset($_FILES["foto"]) ) {
-        $foto = foto_handlefunc($_FILES["foto"]);
-    } else {
+if ( $_SERVER["REQUEST_METHOD"] === "POST") 
+{
+    if (isset($_POST["update"])) {
+        // var_dump($_FILES["foto"]);
+        
         $foto = $result["foto"];
-    }
+        $ret;
 
-    $ret = update($_POST, $foto, $result["id"]);
-    if ( $ret > 0 ) {
-        echo '
-        <script>
-        alert("Edit data berhasil");
-        document.location.href = "index.php";
-        </script>
-        ';
-        // header("Location: index.php");
-        exit;
-    } else {
-        echo '
-        <script>
-        alert("Edit data GAGAL");
-        </script>
-        ';
+        // TODO
+        // ERROR SAAT TIDAK ADA SATUPUN DATA YANG DIUBAH
+        // TODO: SOLVE ERROR, TAMBAH PENGECEKAN SAAT DATA SAMA DENGAN SEBELUMNYA
+        if($_FILES["foto"]["error"] === 4)
+        {
+            $ret = update($_POST,$_POST["id"], $_POST["old-foto"]);
+            var_dump($_POST);
+        }
+        
+        if ($_FILES["foto"]["error"] === 0) {
+            $upload = myfunc($_FILES["foto"]);
+            if ($upload) {
+                // $foto = $upload;
+                $ret = update($_POST, $_POST["id"], $upload);
+                // var_dump($_POST);
+            }
+        }
+        
+    
+        // $ret = update($_POST, $foto, $result["id"]);
+        if ( $ret > 0 ) {
+            echo '
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">Berhasil</h5>
+                        </div>
+                        <div class="modal-body">
+                        Data berhasil disimpan!
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="okButton">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <script>
+            window.onload = function () {
+            let modal = new bootstrap.Modal(document.getElementById("successModal"));
+            modal.show();
+            };
+    
+    
+            document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("okButton").addEventListener("click", function () {
+                window.location.href = "index.php";
+            });
+            });
+            </script>
+            ';
+            exit;
+        } else {
+            echo '
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">GAGAL</h5>
+                        </div>
+                        <div class="modal-body">
+                        Data GAGAL Diperbarui
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" id="closeButton">CLOSE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <script>
+            window.onload = function () {
+            let modal = new bootstrap.Modal(document.getElementById("successModal"));
+            modal.show();
+            };
+    
+    
+            document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("closeButton").addEventListener("click", function () {
+                location.href = window.location.href;
+            });
+            });
+            </script>
+    
+            ';
+            exit;
+        }
     }
+     
 }
 
 ?>
@@ -192,6 +269,7 @@ if (isset($_POST["update"])) {
         <h3 class="text-center">Edit Data Mahasiswa</h3>
         <form action="" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?= $result["id"] ?>">
+            <input type="hidden" name="old-foto" value="<?= $result["foto"] ?>">
 
             <!-- Foto Profil -->
             <div class="text-center">
@@ -275,7 +353,7 @@ if (isset($_POST["update"])) {
             <!-- Upload Foto -->
             <div class="mb-3">
                 <label class="form-label">Foto Profil</label>
-                <input type="file" class="form-control" name="foto" id="fotoInput" accept="image/*">
+                <input type="file" class="form-control" name="foto" id="fotoInput">
             </div>
 
             <!-- Tombol -->

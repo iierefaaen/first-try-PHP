@@ -4,6 +4,11 @@
 session_start();
 // jika tidak ada session == belum login
 if ( !isset($_SESSION["login"]) ){
+    echo '
+    <div class="alert alert-primary" role="alert">
+    A simple primary alert—check it out!
+    </div>
+    ';
     echo "
     <script>
     window.location.href = 'login.php';
