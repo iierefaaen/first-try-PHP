@@ -107,31 +107,24 @@ $result = edit($id);
 if ( $_SERVER["REQUEST_METHOD"] === "POST") 
 {
     if (isset($_POST["update"])) {
-        // var_dump($_FILES["foto"]);
         
         $foto = $result["foto"];
         $ret;
 
-        // TODO
-        // ERROR SAAT TIDAK ADA SATUPUN DATA YANG DIUBAH
-        // TODO: SOLVE ERROR, TAMBAH PENGECEKAN SAAT DATA SAMA DENGAN SEBELUMNYA
         if($_FILES["foto"]["error"] === 4)
         {
             $ret = update($_POST,$_POST["id"], $_POST["old-foto"]);
-            var_dump($_POST);
         }
         
         if ($_FILES["foto"]["error"] === 0) {
             $upload = myfunc($_FILES["foto"]);
             if ($upload) {
-                // $foto = $upload;
                 $ret = update($_POST, $_POST["id"], $upload);
-                // var_dump($_POST);
             }
         }
         
     
-        // $ret = update($_POST, $foto, $result["id"]);
+        // alert success
         if ( $ret > 0 ) {
             echo '
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -141,14 +134,14 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST")
             <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header bg-success">
                             <h5 class="modal-title" id="successModalLabel">Berhasil</h5>
                         </div>
                         <div class="modal-body">
                         Data berhasil disimpan!
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="okButton">OK</button>
+                        <button type="button" class="btn btn-success" id="okButton">OK</button>
                         </div>
                     </div>
                 </div>
@@ -169,7 +162,43 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST")
             </script>
             ';
             exit;
-        } else {
+        } else if ( $ret === 0) { // no change
+            echo '
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning">
+                            <h5 class="modal-title" id="successModalLabel">Peringatan</h5>
+                        </div>
+                        <div class="modal-body">
+                        Data tidak ada yang diperbarui.
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" id="okButton">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <script>
+            window.onload = function () {
+            let modal = new bootstrap.Modal(document.getElementById("successModal"));
+            modal.show();
+            };
+    
+    
+            document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("okButton").addEventListener("click", function () {
+                window.location.href = "index.php";
+            });
+            });
+            </script>
+            ';
+        } else { // failed update
             echo '
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -178,7 +207,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST")
             <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header bg-danger">
                             <h5 class="modal-title" id="successModalLabel">GAGAL</h5>
                         </div>
                         <div class="modal-body">

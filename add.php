@@ -5,15 +5,45 @@ session_start();
 // jika tidak ada session == belum login
 if ( !isset($_SESSION["login"]) ){
     echo '
-    <div class="alert alert-primary" role="alert">
-    A simple primary alert—check it out!
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title" id="warningModalLabel">PERINGATAN</h5>
+                </div>
+                <div class="modal-body">
+                <p class = "text-danger fw-bold fs-3">ANDA BELUM LOGIN</p>
+                <p class = "text-danger">HARAP LOGIN</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="closeButton">CLOSE</button>
+                </div>
+            </div>
+        </div>
     </div>
-    ';
-    echo "
+    
     <script>
-    window.location.href = 'login.php';
+    window.onload = function () {
+    let modal = new bootstrap.Modal(document.getElementById("warningModal"),
+        {    
+        backdrop: "static",
+        keyboard: false
+        } 
+    );
+    modal.show();
+    };
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("closeButton").addEventListener("click", function () {
+        window.location.href = "login.php";
+    });
+    });
     </script>
-    ";
+    ';
     exit;
 }
 
@@ -25,6 +55,7 @@ if ( isset($_POST["tambah"]) ) {
     $foto = foto_handlefunc($_FILES);
 
     if ( !$foto ) {
+        // TODO
         // document.location.href = "index.php";
         echo '
         <script>

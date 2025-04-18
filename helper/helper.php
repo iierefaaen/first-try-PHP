@@ -291,7 +291,31 @@ function update($data, $id, $foto = null) {
     $jenjang = htmlspecialchars($data['jenjang'], ENT_QUOTES, 'UTF-8');
     $status = htmlspecialchars($data['status'], ENT_QUOTES, 'UTF-8');
 
-    
+    // ambil dan cek data lama
+    $result = mysqli_query($conn, "SELECT * FROM students WHERE id = '$id'");
+    $old = mysqli_fetch_assoc($result);
+
+    // Cek apakah ada perubahan
+    if (
+        $old['nama'] == $nama &&
+        $old['nim'] == $nim &&
+        $old['alamat'] == $alamat &&
+        $old['kota'] == $kota &&
+        $old['provinsi'] == $provinsi &&
+        $old['telepon'] == $telepon &&
+        $old['email'] == $email &&
+        $old['jurusan'] == $jurusan &&
+        $old['angkatan'] == $angkatan &&
+        $old['jenis_kelamin'] == $jenis_kelamin &&
+        $old['tanggal_lahir'] == $tanggal_lahir &&
+        $old['jenjang'] == $jenjang &&
+        $old['status'] == $status &&
+        ($foto === null || $old['foto'] == $foto)
+    ) {
+        return 0; // Tidak ada perubahan
+    }
+
+
 
     $query = "
         UPDATE students SET
@@ -318,8 +342,12 @@ function update($data, $id, $foto = null) {
 
     $query .= " WHERE id = '$id'";
 
-    mysqli_query($conn, $query);
-    return mysqli_affected_rows($conn);
+    $ret = mysqli_query($conn, $query);
+    if ( $ret ) {
+        return mysqli_affected_rows($conn); // 1 if success
+    } else {
+        return -1;
+    }
 }
 
 

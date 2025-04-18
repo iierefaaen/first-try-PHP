@@ -22,12 +22,34 @@ if ( isset($_SESSION["login"]) ){
 
 if ( isset($_POST["login"])) {
     if ( !login($_POST) ) {
-        echo "
+        // echo"fepflp";
+        // echo "<script>console.log('HALO')</script>";
+        // echo '
+        // <script>
+        // console.log("TES")
+        // document.addEventListener("DOMContentLoaded", function() {
+        // console.log("EFEFEFEFEF")
+        //     let alert = `<div class="alert alert-danger">
+        //         <p>Username atau Password SALAH</p>
+        //     </div>`;
+        //     let div = document.querySelector("alert-div");
+        //     if (div) {
+        //         div.innerHTML = alert;
+        //     }
+        // });
+        // </script>
+        // ';
+        echo '
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
         <script>
-        alert('Username atau password SALAH');
-        window.location.href = 'login.php';
+        window.onload = function () {
+            document.querySelector(".alert-div").innerHTML = `<div class = "alert alert-danger">Username atau Password Salah</div>`;
+            let modal = new bootstrap.Modal(document.querySelector("#warningModal"));
+        };
         </script>
-        ";
+        ';
     } else {
         // set session bernama login
         $_SESSION["login"] = true;
@@ -75,6 +97,8 @@ if ( isset($_POST["login"])) {
     <div class="container">
         <div class="login-container">
             <h3 class="text-center mb-4">Login</h3>
+            <div class="alert-div">
+            </div>
             <form action="" method="POST">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
