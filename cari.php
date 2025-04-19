@@ -2,18 +2,15 @@
 
 session_start();
 
-require_once("helper/helper.php");
 
 // jika tidak ada session == belum login
 if ( !isset($_SESSION["login"]) ){
-    echo "
-    <script>
-    window.location.href = 'login.php';
-    </script>
-    ";
-    exit;
+     // WARNING : don't add white space after Location, or will be error
+     header('Location: login.php');
+     exit;
 }
 
+require_once("helper/helper.php");
 $result = tampilkan();
 ?>
 

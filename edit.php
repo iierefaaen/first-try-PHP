@@ -204,11 +204,11 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST")
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     
-            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal fade" id="failedModal" tabindex="-1" aria-labelledby="failedModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header bg-danger">
-                            <h5 class="modal-title" id="successModalLabel">GAGAL</h5>
+                            <h5 class="modal-title" id="failedModalLabel">GAGAL</h5>
                         </div>
                         <div class="modal-body">
                         Data GAGAL Diperbarui
@@ -222,7 +222,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST")
     
             <script>
             window.onload = function () {
-            let modal = new bootstrap.Modal(document.getElementById("successModal"));
+            let modal = new bootstrap.Modal(document.getElementById("failedModal"));
             modal.show();
             };
     

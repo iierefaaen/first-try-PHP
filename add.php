@@ -4,77 +4,100 @@
 session_start();
 // jika tidak ada session == belum login
 if ( !isset($_SESSION["login"]) ){
-    echo '
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-danger">
-                    <h5 class="modal-title" id="warningModalLabel">PERINGATAN</h5>
-                </div>
-                <div class="modal-body">
-                <p class = "text-danger fw-bold fs-3">ANDA BELUM LOGIN</p>
-                <p class = "text-danger">HARAP LOGIN</p>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="closeButton">CLOSE</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-    window.onload = function () {
-    let modal = new bootstrap.Modal(document.getElementById("warningModal"),
-        {    
-        backdrop: "static",
-        keyboard: false
-        } 
-    );
-    modal.show();
-    };
-
-
-    document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("closeButton").addEventListener("click", function () {
-        window.location.href = "login.php";
-    });
-    });
-    </script>
-    ';
+    // WARNING : don't add white space after Location, or will be error
+    header('Location: login.php');
     exit;
 }
 
 
 require_once("helper/helper.php");
 
-if ( isset($_POST["tambah"]) ) {
 
-    $foto = foto_handlefunc($_FILES);
-
-    if ( !$foto ) {
-        // TODO
-        // document.location.href = "index.php";
-        echo '
-        <script>
-        alert("Penambahan data gagal");
-        </script>
-        ';
-        return false;
-        //exit;
-    }
-
-    $result = tambah($_POST, $foto);
-    if ( $result > 0 ) {
-        echo '
-        // TODO : CREATE ALERT
-        <script>
-        alert("Penambahan data berhasil");
-        document.location.href = "index.php";
-        </script>
-        ';
+if ( $_SERVER["REQUEST_METHOD"] == "POST")
+{
+    if ( isset($_POST["tambah"]) ) {
+    
+        $foto = foto_handlefunc($_FILES);
+    
+        if ( !$foto ) {
+            // alert when  no photo
+            echo '
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            
+            
+            <div class="modal fade" id="failedModal" tabindex="-1" aria-labelledby="failedModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header bg-danger">
+            <h5 class="modal-title" id="failedModalLabel">GAGAL</h5>
+            </div>
+            <div class="modal-body">
+            <p>Tambahkan Foto</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" id="closeButton">CLOSE</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            
+            <script>
+            window.onload = function () {
+            let modal = new bootstrap.Modal(document.getElementById("failedModal"));
+            modal.show();
+            };
+    
+    
+            document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("closeButton").addEventListener("click", function () {
+                location.href = window.location.href;
+            });
+            });
+            </script>
+            ';
+            exit;
+        }
+    
+        $result = tambah($_POST, $foto);
+        if ( $result > 0 ) {
+            // alert when success
+            echo '
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success">
+                            <h5 class="modal-title" id="successModalLabel">Berhasil</h5>
+                        </div>
+                        <div class="modal-body">
+                        <p>Data berhasil ditambahkan!</p>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="okButton">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <script>
+            window.onload = function () {
+            let modal = new bootstrap.Modal(document.getElementById("successModal"));
+            modal.show();
+            };
+    
+    
+            document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("okButton").addEventListener("click", function () {
+                window.location.href = "index.php";
+            });
+            });
+            </script>
+            ';
+        }
     }
 }
 ?>
@@ -131,23 +154,23 @@ if ( isset($_POST["tambah"]) ) {
             </div>
             <div class="mb-3">
                 <label class="form-label">Alamat</label>
-                <textarea name="alamat" class="form-control"></textarea>
+                <textarea name="alamat" class="form-control" required></textarea>
             </div>
             <div class="mb-3">
                 <label class="form-label">Kota</label>
-                <input type="text" name="kota" class="form-control">
+                <input type="text" name="kota" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Provinsi</label>
-                <input type="text" name="provinsi" class="form-control">
+                <input type="text" name="provinsi" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Telepon</label>
-                <input type="text" name="telepon" class="form-control">
+                <input type="text" name="telepon" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control">
+                <input type="email" name="email" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Jurusan</label>
@@ -166,7 +189,7 @@ if ( isset($_POST["tambah"]) ) {
             </div>
             <div class="mb-3">
                 <label class="form-label">Tanggal Lahir</label>
-                <input type="date" name="tanggal_lahir" class="form-control">
+                <input type="date" name="tanggal_lahir" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Jenjang</label>
@@ -179,12 +202,12 @@ if ( isset($_POST["tambah"]) ) {
             </div>
             <div class="mb-3">
                 <label class="form-label">Foto</label>
-                <input type="file" name="foto" class="form-control">
+                <input type="file" name="foto" class="form-control" required>
             </div>
 
             <div class="mb-3">
             <label class="form-label">Status</label>
-            <select name="status" class="form-select">
+            <select name="status" class="form-select" required>
                 <option value="aktif">Aktif</option>
                 <option value="cuti">Cuti</option>
                 <option value="lulus">Lulus</option>

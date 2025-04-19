@@ -217,7 +217,7 @@ function foto_handlefunc($data) {
     // 4 => tidak ada file yang diupload
     if ( $error === 4 ) {
         // TODO: EDIT
-        echo 'UPLOAD GAMBAR';
+        // echo 'UPLOAD GAMBAR';
         return false;
     }
 
