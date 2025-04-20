@@ -1,107 +1,78 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-
 session_start();
 require_once("helper/helper.php");
 
 // jika tidak ada session == belum login
 if ( !isset($_SESSION["login"]) ){
-    echo "
-    <script>
-    window.location.href = 'login.php';
-    </script>
-    ";
+    // WARNING : don't add white space after Location, or will be error
+    header('Location: login.php');
     exit;
 }
 
+if ( $_SERVER["REQUEST_METHOD"] == "GET") {
+    if ( !isset($_GET["id"] ) ) {
+        echo '
+        <!DOCTYPE html>
+        <html lang="id">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>404 - Halaman Tidak Ditemukan</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        </head>
+        <body class="d-flex justify-content-center align-items-center vh-100 bg-light" style="font-family: "Poppins", sans-serif;">
+            <div class="container text-center">
+                <div class="p-4 bg-white shadow-lg rounded mx-auto" style="max-width: 450px;">
+                    <div class="text-danger mb-3 display-1">🚫</div>
+                    <h2 class="text-dark fw-bold">HALAMAN TIDAK TERSEDIA</h2>
+                    <p class="text-secondary">Oops! Halaman yang Anda cari tidak tersedia.</p>
+                    <a href="index.php" class="btn btn-primary fw-bold">🔙 Kembali ke Beranda</a>
+                </div>
+            </div>
+    
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </body>
+        </html>
+        ';
+        exit;
+    }
 
-$id = $_GET["id"];
 
-$result = edit($id);
- if ( !$result) {
-    echo '
-    <!DOCTYPE html>
-    <html lang="id">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Data Tidak Ditemukan</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-        <style>
-            body {
-                background-color: #f8f9fa;
-                height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .error-container {
-                text-align: center;
-                padding: 40px;
-                background: white;
-                border-radius: 12px;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-                animation: fadeIn 0.5s ease-in-out;
-                max-width: 500px;
-            }
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: scale(0.9);
-                }
-                to {
-                    opacity: 1;
-                    transform: scale(1);
-                }
-            }
-            .error-icon {
-                font-size: 80px;
-                color: #dc3545;
-                margin-bottom: 10px;
-            }
-            .error-container h1 {
-                font-size: 50px;
-                font-weight: bold;
-                color: #dc3545;
-            }
-            .error-container p {
-                font-size: 18px;
-                color: #6c757d;
-                margin-bottom: 20px;
-            }
-            .btn-home {
-                background-color: #007bff;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 5px;
-                text-decoration: none;
-                font-weight: bold;
-                transition: 0.3s;
-            }
-            .btn-home:hover {
-                background-color: #0056b3;
-                transform: scale(1.05);
-            }
-        </style>
-    </head>
-    <body>
+    $id = $_GET["id"];
+    $result = edit($id);
+    if ( !$result) {
+       echo '
+       <!DOCTYPE html>
+        <html lang="id">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Data Tidak Ditemukan</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        </head>
+        <body class="d-flex justify-content-center align-items-center vh-100 bg-light" style="font-family: "Poppins", sans-serif;">
+            <div class="container text-center">
+                <div class="p-4 bg-white shadow-lg rounded mx-auto" style="max-width: 450px;">
+                    <div class="text-danger mb-3 display-1">🚫</div>
+                    <h2 class="text-dark fw-bold">DATA TIDAK DITEMUKAN</h2>
+                    <p class="text-secondary">Oops! Data yang Anda cari tidak tersedia atau mungkin telah dihapus.</p>
+                    <a href="index.php" class="btn btn-primary fw-bold">🔙 Kembali ke Beranda</a>
+                </div>
+            </div>
+    
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </body>
+        </html>
+       ';
+    
+       exit;
+    }
+}
 
-    <div class="error-container">
-        <i class="fas fa-exclamation-triangle error-icon"></i>
-        <h1>404</h1>
-        <p>Oops! Data mahasiswa tidak ditemukan.</p>
-        <a href="index.php" class="btn-home">🔙 Kembali ke Beranda</a>
-    </div>
 
-    </body>
-    </html>
-    ';
-
-    exit;
- }
 
 
 if ( $_SERVER["REQUEST_METHOD"] === "POST") 

@@ -115,7 +115,7 @@ function tampilkan() {
 
 function detail($id){
     global $conn;
-    $result = mysqli_query($conn, "SELECT * FROM students WHERE id = '$id'");
+    $result = mysqli_query($conn, "SELECT * FROM students WHERE id = '$id' AND deleted_at IS NULL");
     $ret = mysqli_fetch_assoc($result);
     return $ret;
 }
@@ -264,7 +264,7 @@ function edit($id){
     }
 
     $result = mysqli_query($conn,
-    "SELECT * FROM students WHERE id = '$id'"
+    "SELECT * FROM students WHERE id = '$id' AND deleted_at IS NULL"
     );
 
     if ( !$result ) {
@@ -357,13 +357,17 @@ function delete($id) {
     $now = new DateTime();
     $timestamp = $now->format("Y-m-d H:i:s");
 
-    mysqli_query($conn, "
+    $ret = mysqli_query($conn, "
     UPDATE students SET
     deleted_at = '$timestamp'
     WHERE id = '$id'
     ");
 
-    return mysqli_affected_rows($conn);
+    if ( $ret) {
+        return mysqli_affected_rows($conn);
+    } else {
+        return 0;
+    }
 }
 
 

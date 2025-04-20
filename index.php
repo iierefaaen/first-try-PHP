@@ -6,11 +6,8 @@ require_once("helper/helper.php");
 
 // jika tidak ada session == belum login
 if ( !isset($_SESSION["login"]) ){
-    echo "
-    <script>
-    window.location.href = 'login.php';
-    </script>
-    ";
+    // WARNING : don't add white space after Location, or will be error
+    header('Location: login.php');
     exit;
 }
 
@@ -22,6 +19,7 @@ $jenjang_result = hitung_jumlah_mahasiswa_berdasar_jenjang();
 $status_result = hitung_jumlah_mahasiswa_berdasar_status();
 $angkatan_result = hitung_jumlah_mahasiswa_berdasar_angkatan();
 
+// TODO :
 // // cek cookie
 // if ( isset($_COOKIE["login"]) ) {
 //     if ($_COOKIE["login"] === "true") {
@@ -41,6 +39,11 @@ $result = tampilkan();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Mahasiswa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
@@ -128,10 +131,25 @@ $result = tampilkan();
         <a href="#">⚙️ Pengaturan</a>
         <a href="logout.php">🚪 Logout</a>
     </div>
-
-
-
+    
+    
+    
     <div class="content">
+        <div class="container mt-3 mb-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow-lg border-0 rounded-4">
+                        <div class="card-body text-center py-5">
+                            <h4 class="card-title mb-4 text-primary">Panel Admin</h4>
+                            <p class="card-text mb-4">Akses pengelolaan data, manajemen user, dan fitur admin lainnya.</p>
+                            <a href="admin.php" class="btn btn-primary px-4 py-2">
+                                <i class="bi bi-speedometer2 me-2"></i> Menu Admin
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- STATISTIK -->
         <div class="row">
