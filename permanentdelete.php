@@ -39,7 +39,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
                     <div class="text-danger mb-3 display-1">🚫</div>
                     <h2 class="text-dark fw-bold">DATA TIDAK DITEMUKAN</h2>
                     <p class="text-secondary">Oops! Data yang Anda cari tidak tersedia atau mungkin telah dihapus.</p>
-                    <a href="recover.php" class="btn btn-primary fw-bold">🔙 Kembali</a>
+                    <a href="recover.php" class="btn btn-primary fw-bold">🔙 Kembali
                 </div>
             </div>
         </body>
@@ -47,17 +47,17 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
         exit();
     }
     
-    // Jika user menekan tombol recover
+    // Jika user menekan tombol hapus
     if (isset($_GET['confirm']) && $_GET['confirm'] === 'yes') {
-        $recover = recoverdata( $id );
-        if ($recover > 0) {
+        $del = permanent_delete_data( $id );
+        if ($del > 0) {
             echo '
             <!DOCTYPE html>
             <html lang="id">
             <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Data Dipulihkan</title>
+            <title>Data Dihapus</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
             </head>
             
@@ -69,7 +69,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
             <h5 class="modal-title" id="successModalLabel">Berhasil</h5>
             </div>
             <div class="modal-body">
-            <p>Data berhasil dipulihkan!</p>
+            <p>Data berhasil dihapus secara permanen!</p>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-success" id="okButton">OK</button>
@@ -103,7 +103,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
             <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Data Gagal Dipulihkan</title>
+            <title>Data Gagal Dihapus</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
             </head>
             
@@ -115,7 +115,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
             <h5 class="modal-title" id="failedModalLabel">GAGAL</h5>
             </div>
             <div class="modal-body">
-            <p>Data gagal dipulihkan</p>
+            <p>Data gagal dihapus</p>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-danger" id="closeButton">CLOSE</button>
@@ -152,7 +152,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recover Data Mahasiswa</title>
+    <title>Hapus Permanen Data Mahasiswa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .card {
@@ -182,8 +182,8 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
 
 <div class="container">
     <div class="card">
-        <div class="card-header text-center bg-warning text-white">
-            <h3>Konfirmasi Recover Data</h3>
+        <div class="card-header text-center bg-danger text-white">
+            <h3>Konfirmasi Hapus Permanen Data Mahasiswa</h3>
         </div>
         <div class="card-body text-center">
             <img src="uploads/img/<?php echo htmlspecialchars($result["foto"]); ?>" alt="Foto Mahasiswa" class="profile-pic">
@@ -206,7 +206,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
 
             <div class="btn-group-custom">
                 <a href="recover.php" class="btn btn-secondary">🔙 Batal</a>
-                <a href="recoverdata.php?id=<?= $result['id']; ?>&confirm=yes" class="btn btn-warning">♻️ Ya, Pulihkan Data</a>
+                <a href="permanentdelete.php?id=<?= $result['id']; ?>&confirm=yes" class="btn btn-danger">🗑️ Ya, Hapus Permanen</a>
             </div>
         </div>
     </div>

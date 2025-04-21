@@ -38,12 +38,12 @@ if ( !isset($_SESSION["login"]) ){
 
         <!-- Card Pulihkan Data -->
         <div class="col-md-5">
-            <a href="recoverdata.php" class="text-decoration-none">
+            <a href="recover.php" class="text-decoration-none">
                 <div class="card text-center shadow-sm border-0 rounded-4 h-100 hover-shadow">
                     <div class="card-body py-5">
                         <i class="bi bi-arrow-clockwise display-4 text-success mb-3"></i>
-                        <h5 class="card-title">Pulihkan Data</h5>
-                        <p class="card-text">Lihat dan pulihkan data mahasiswa yang telah dihapus.</p>
+                        <h5 class="card-title">Kelola Data</h5>
+                        <p class="card-text">Lihat, hapus, dan pulihkan data mahasiswa.</p>
                     </div>
                 </div>
             </a>

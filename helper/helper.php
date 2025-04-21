@@ -436,3 +436,61 @@ function hitung_jumlah_mahasiswa_berdasar_status() {
     SELECT status, COUNT(*) AS total FROM students WHERE deleted_at IS NULL GROUP BY status
     ");
 }
+
+
+function get_data_by_id($id, $is_deleted = false) {
+    global $conn;
+
+    // deleted_at = NULL
+    // if user not soft deleted
+    if ( $is_deleted == false) {
+        return mysqli_fetch_assoc(mysqli_query($conn,"
+        SELECT * FROM students WHERE id = '$id' AND deleted_at IS NULL
+        "));
+    } else { // value deleted_at is NOT NULL => user is soft deleted
+        return mysqli_fetch_assoc(mysqli_query($conn,"
+        SELECT * FROM students WHERE id = '$id' AND deleted_at IS NOT NULL
+        "));
+    }
+}
+
+function get_all_data( $is_deleted = false ) {
+    global $conn;
+
+    $ret = array();
+    if ( $is_deleted == false) {
+        $result = mysqli_query($conn, "SELECT * FROM students WHERE deleted_at IS NULL");
+        foreach ( $result as $key => $value) {
+            $ret[$key] = $value;
+        }
+    } else {
+        $result = mysqli_query($conn, "SELECT * FROM students WHERE deleted_at IS NOT NULL");
+        foreach ( $result as $key => $value) {
+            $ret[$key] = $value;
+        }
+
+    }
+    return $ret;
+}
+
+function recoverdata( $id ) {
+    global $conn;
+
+    mysqli_query($conn, "
+    UPDATE students SET
+    deleted_at = NULL
+    WHERE id = '$id'
+    ");
+
+    return mysqli_affected_rows($conn);
+}
+
+function permanent_delete_data( $id ){
+    global $conn;
+
+    mysqli_query($conn,"
+    DELETE FROM students WHERE id = '$id'
+    ");
+
+    return mysqli_affected_rows($conn);
+}
