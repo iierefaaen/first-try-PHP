@@ -2,7 +2,7 @@
 
 session_start();
 
-require_once("helper/helper.php");
+require_once("helper/functions.php");
 
 // jika tidak ada session == belum login
 if ( !isset($_SESSION["login"]) ){

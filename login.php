@@ -1,8 +1,7 @@
 <?php
 // start session
 session_start();
-require_once("helper/helper.php");
-
+require_once("helper/functions.php");
 // cek cookie
 cek_cookie($_POST);
 
@@ -61,11 +60,13 @@ if ( isset($_POST["login"])) {
         //     setcookie("login", "true", time()+60);
         // }
 
-        echo "
-        <script>
-        window.location.href = 'index.php';
-        </script>
-        ";
+        // echo "
+        // <script>
+        // window.location.href = 'index.php';
+        // </script>
+        // ";
+        header("Location: index.php");
+        exit;
     }
 }
 

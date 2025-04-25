@@ -82,13 +82,21 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST")
         $foto = $result["foto"];
         $ret;
 
+        
+        // no photo uploaded
+        // use existing
         if($_FILES["foto"]["error"] === 4)
         {
             $ret = update($_POST,$_POST["id"], $_POST["old-foto"]);
+            // $ret = upload_photo($_FILES[""]);
         }
         
+        // new image uploaded
+        // handle image
         if ($_FILES["foto"]["error"] === 0) {
-            $upload = myfunc($_FILES["foto"]);
+            // $upload = myfunc($_FILES["foto"]);
+            // $photo = upload_photo( $_FILES );
+            $photo = upload_image( $_FILES );
             if ($upload) {
                 $ret = update($_POST, $_POST["id"], $upload);
             }

@@ -18,7 +18,7 @@ function registration($data){
     $password = $data["password"];
     $confirm_password = $data["confirm-password"];
 
-    // CEK APAKAH PASSWORD DAN CONFIRMPASSWORD SAMA
+    // CEK APAKAH PASSWORD DAN CONFIRM PASSWORD SAMA
     if ( $password !== $confirm_password ) {
         echo "<script>alert('Password dan konfirmasi password tidak cocok!');</script>";
         return -1;
@@ -166,97 +166,142 @@ function tambah($data, $foto) {
 }
 
 
-function myfunc($data) {
-    // handle func upload image
-    $filename =$data["name"];
-    $filesize =$data["size"];
-    $tmp_name =$data["tmp_name"];
+// function myfunc($data) {
+//     // handle func upload image
+//     $filename =$data["name"];
+//     $filesize =$data["size"];
+//     $tmp_name =$data["tmp_name"];
 
-    // cek yang diupload formatnya benar
-    $valid_ext_file = ["jpg", "jpeg", "png", "webp"];
-    $ext_file = explode(".", $filename);
-    $ext_file = strtolower(end($ext_file));
-    if ( !in_array($ext_file, $valid_ext_file) ) {
-        // TODO : CREATE ALERT
-        echo "EXTENSI FILE SALAH";
-        return false;
-    }
+//     // cek yang diupload formatnya benar
+//     $valid_ext_file = ["jpg", "jpeg", "png", "webp"];
+//     $ext_file = explode(".", $filename);
+//     $ext_file = strtolower(end($ext_file));
+//     if ( !in_array($ext_file, $valid_ext_file) ) {
+//         // TODO : CREATE ALERT
+//         echo "EXTENSI FILE SALAH";
+//         return false;
+//     }
 
-    // cek file size
-    // max 2mb
-    // dalam byte
-    if ( $filesize > 2500000 ) {
-        // TODO : CREATE ALERT
-        echo "EXTENSI FILE TERLALU BESAR> MAX 2MB";
-        return false;
-    }
+//     // cek file size
+//     // max 2mb
+//     // dalam byte
+//     if ( $filesize > 2500000 ) {
+//         // TODO : CREATE ALERT
+//         echo "EXTENSI FILE TERLALU BESAR> MAX 2MB";
+//         return false;
+//     }
     
 
-    // relatif terhadap file ini
-    // generate nama file baru
-    $filename = explode(".", $filename)[0];
-    $filename = $filename . '_' . uniqid() . '.' . $ext_file;
-    $destination = __DIR__ . '/../uploads/img/' . $filename;
-    $result = move_uploaded_file($tmp_name, $destination);
-    // return string nama fil foto untuk diinsert ke db
-    if ( $result ) {
-        return $filename;
-    } else {
-        return false;
-    }
-}
+//     // relatif terhadap file ini
+//     // generate nama file baru
+//     $filename = explode(".", $filename)[0];
+//     $filename = $filename . '_' . uniqid() . '.' . $ext_file;
+//     $destination = __DIR__ . '/../uploads/img/' . $filename;
+//     $result = move_uploaded_file($tmp_name, $destination);
+//     // return string nama fil foto untuk diinsert ke db
+//     if ( $result ) {
+//         return $filename;
+//     } else {
+//         return false;
+//     }
+// }
 
-function foto_handlefunc($data) {
-    // handle func upload image
-    $filename = $_FILES["foto"]["name"];
-    $filesize = $_FILES["foto"]["size"];
-    $tmp_name = $_FILES["foto"]["tmp_name"];
-    $error = $_FILES["foto"]["error"];
+// function foto_handlefunc($data) {
+//     // handle func upload image
+//     $filename = $_FILES["foto"]["name"];
+//     $filesize = $_FILES["foto"]["size"];
+//     $tmp_name = $_FILES["foto"]["tmp_name"];
+//     $error = $_FILES["foto"]["error"];
     
-    // cek apakah gamabr diupload
-    // 4 => tidak ada file yang diupload
-    if ( $error === 4 ) {
-        // TODO: EDIT
-        // echo 'UPLOAD GAMBAR';
-        return false;
-    }
+//     // cek apakah gamabr diupload
+//     // 4 => tidak ada file yang diupload
+//     if ( $error === 4 ) {
+//         // TODO: EDIT
+//         // echo 'UPLOAD GAMBAR';
+//         return false;
+//     }
 
-    // cek yang diupload formatnya benar
-    $valid_ext_file = ["jpg", "jpeg", "png", "webp"];
-    $ext_file = explode(".", $filename);
-    $ext_file = strtolower(end($ext_file));
-    if ( !in_array($ext_file, $valid_ext_file) ) {
-        // TODO : CREATE ALERT
-        echo "EXTENSI FILE SALAH";
-        return false;
-    }
+//     // cek yang diupload formatnya benar
+//     $valid_ext_file = ["jpg", "jpeg", "png", "webp"];
+//     $ext_file = explode(".", $filename);
+//     $ext_file = strtolower(end($ext_file));
+//     if ( !in_array($ext_file, $valid_ext_file) ) {
+//         // TODO : CREATE ALERT
+//         echo "EXTENSI FILE SALAH";
+//         return false;
+//     }
 
-    // cek file size
-    // max 2mb
-    // dalam byte
-    if ( $filesize > 2500000 ) {
-        // TODO : CREATE ALERT
-        echo "EXTENSI FILE TERLALU BESAR> MAX 2MB";
-        return false;
-    }
+//     // cek file size
+//     // max 2mb
+//     // dalam byte
+//     if ( $filesize > 2500000 ) {
+//         // TODO : CREATE ALERT
+//         echo "EXTENSI FILE TERLALU BESAR> MAX 2MB";
+//         return false;
+//     }
     
 
-    // relatif terhadap file ini
-    // generate nama file baru
-    $filename = explode(".", $filename)[0];
-    $filename = $filename . '_' . uniqid() . '.' . $ext_file;
-    $destination = __DIR__ . '/../uploads/img/' . $filename;
-    $result = move_uploaded_file($tmp_name, $destination);
-    // return string nama fil foto untuk diinsert ke db
-    if ( $result ) {
-        return $filename;
-    } else {
-        return false;
+//     // relatif terhadap file ini
+//     // generate nama file baru
+//     $filename = explode(".", $filename)[0];
+//     $filename = $filename . '_' . uniqid() . '.' . $ext_file;
+//     $destination = __DIR__ . '/../uploads/img/' . $filename;
+//     $result = move_uploaded_file($tmp_name, $destination);
+//     // return string nama fil foto untuk diinsert ke db
+//     if ( $result ) {
+//         return $filename;
+//     } else {
+//         return false;
+//     }
+// }
+
+// TODO :
+
+
+
+// TODO :
+function upload_image( $file, $old_image = null) {
+    $allowed_ext = array("jpg","jpeg","png", );
+    $max_file_size = 2 * 1024 * 1024; // 2 MB
+    if ( isset($file["name"]) && $file["error"] === UPLOAD_ERR_OK) {
+        $filename = $file["name"];
+        $filesize = $file["size"];
+        $file_temp = $file["temp_naem"];
+        $file_ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+        // check file extension
+        if ( !in_array($file_ext, $allowed_ext) ) {
+            return "Extensi filke salah. extensi diterima: jpg, jpeg, png";
+        }
+
+        // check file size
+        if ( $filesize > $max_file_size) {
+            return "Ukuran file terlalu besar. Maksimla 2 MB.";
+        }
+
+        // generate unique file name
+        $uploaded_filename = pathinfo($filename, PATHINFO_FILENAME) . "_" . uniqid() . "." . $file_ext;
+
+        // UPLOAD FILE
+        $upload_path = __DIR__ . "../uploads/img/";
+        if ( move_uploaded_file($file_temp, $upload_path) ) {
+            return $uploaded_filename;
+        } else {
+            return "Upload Gagal";
+        }
     }
-}
 
 
- 
+    // handle old file, if not upload new image on edit page
+    if ( $old_image ) {
+        return $old_image;
+    }
+
+    return "Tidak ada file yang diupload";
+} // TODO
+
+
+
 function edit($id){
     global $conn;
     if (!isset($_GET['id']) || empty($_GET['id'])) {

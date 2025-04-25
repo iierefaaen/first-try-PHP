@@ -10,56 +10,61 @@ if ( !isset($_SESSION["login"]) ){
 }
 
 
-require_once("helper/helper.php");
+require_once("helper/functions.php");
 
 
 if ( $_SERVER["REQUEST_METHOD"] == "POST")
 {
     if ( isset($_POST["tambah"]) ) {
     
-        $foto = foto_handlefunc($_FILES);
+        // $foto = foto_handlefunc($_FILES);
+        // $foto = upload_photo($_FILES, $_FILES["foto"]["name"], 4);
+        // TODO : commented
+        // $foto = upload_image($_FILES,); 
+
     
-        if ( !$foto ) {
-            // alert when  no photo
-            echo '
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        // TODO : commented
+        // if ( !$foto ) {
+        //     // alert when  no photo
+        //     echo '
+        //     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        //     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             
             
-            <div class="modal fade" id="failedModal" tabindex="-1" aria-labelledby="failedModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-            <div class="modal-header bg-danger">
-            <h5 class="modal-title" id="failedModalLabel">GAGAL</h5>
-            </div>
-            <div class="modal-body">
-            <p>Tambahkan Foto</p>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-danger" id="closeButton">CLOSE</button>
-            </div>
-            </div>
-            </div>
-            </div>
+        //     <div class="modal fade" id="failedModal" tabindex="-1" aria-labelledby="failedModalLabel" aria-hidden="true">
+        //     <div class="modal-dialog modal-dialog-centered">
+        //     <div class="modal-content">
+        //     <div class="modal-header bg-danger">
+        //     <h5 class="modal-title" id="failedModalLabel">GAGAL</h5>
+        //     </div>
+        //     <div class="modal-body">
+        //     <p>Tambahkan Foto</p>
+        //     </div>
+        //     <div class="modal-footer">
+        //     <button type="button" class="btn btn-danger" id="closeButton">CLOSE</button>
+        //     </div>
+        //     </div>
+        //     </div>
+        //     </div>
             
-            <script>
-            window.onload = function () {
-            let modal = new bootstrap.Modal(document.getElementById("failedModal"));
-            modal.show();
-            };
+        //     <script>
+        //     window.onload = function () {
+        //     let modal = new bootstrap.Modal(document.getElementById("failedModal"));
+        //     modal.show();
+        //     };
     
     
-            document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("closeButton").addEventListener("click", function () {
-                location.href = window.location.href;
-            });
-            });
-            </script>
-            ';
-            exit;
-        }
+        //     document.addEventListener("DOMContentLoaded", function () {
+        //     document.getElementById("closeButton").addEventListener("click", function () {
+        //         location.href = window.location.href;
+        //     });
+        //     });
+        //     </script>
+        //     ';
+        //     exit;
+        // }
     
-        $result = tambah($_POST, $foto);
+        $result = add_data($_POST, $foto);
         if ( $result > 0 ) {
             // alert when success
             echo '
