@@ -9,7 +9,7 @@ if ( !isset($_SESSION["login"]) ){
 }
 
 
-require_once("helper/helper.php");
+require_once("helper/functions.php");
 
 if ( $_SERVER["REQUEST_METHOD"] == "GET")
 {
@@ -41,7 +41,9 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
         exit;
     }
     $id = $_GET["id"];
-    $result = detail($id);
+    // $result = detail($id);
+    $result = get_data_by_id($id);
+
     if ( !$result ) {
         echo '
         <!DOCTYPE html>

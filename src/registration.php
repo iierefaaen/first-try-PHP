@@ -1,6 +1,6 @@
 <?php
 
-require_once("helper/helper.php");
+require_once("helper/functions.php");
 
 // CEK APAKAH TOMBOL SUDAH DITEKAN
 if (isset($_POST["register"])) {

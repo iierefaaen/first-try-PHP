@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once("helper/helper.php");
+require_once("helper/functions.php");
 
 // jika tidak ada session == belum login
 if ( !isset($_SESSION["login"]) ){
@@ -11,7 +11,7 @@ if ( !isset($_SESSION["login"]) ){
 }
 
 if ( $_SERVER["REQUEST_METHOD"] == "GET") {
-    if ( !isset($_GET["id"] ) ) {
+    if ( !isset($_GET["id"] ) || empty($_GET['id']) ) {
         echo '
         <!DOCTYPE html>
         <html lang="id">
@@ -41,7 +41,8 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET") {
 
 
     $id = $_GET["id"];
-    $result = edit($id);
+    // $result = edit($id);
+    $result = get_data_by_id($id);
     if ( !$result) {
        echo '
        <!DOCTYPE html>
@@ -78,7 +79,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET") {
 if ( $_SERVER["REQUEST_METHOD"] === "POST") 
 {
     if (isset($_POST["update"])) {
-        
+        $result = get_data_by_id($_GET["id"]);
         $foto = $result["foto"];
         $ret;
 
@@ -87,7 +88,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST")
         // use existing
         if($_FILES["foto"]["error"] === 4)
         {
-            $ret = update($_POST,$_POST["id"], $_POST["old-foto"]);
+            $ret = update_data($_POST["id"],$_POST, $_POST["old-foto"]);
             // $ret = upload_photo($_FILES[""]);
         }
         
@@ -98,7 +99,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST")
             // $photo = upload_photo( $_FILES );
             $photo = upload_image( $_FILES );
             if ($upload) {
-                $ret = update($_POST, $_POST["id"], $upload);
+                $ret = update_data($_POST, $_POST["id"], $upload);
             }
         }
         
@@ -329,8 +330,8 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST")
             <div class="mb-3">
                 <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
                 <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
-                    <option value="L" <?= $result['jenis_kelamin'] == 'Laki-laki' ? 'selected' : '' ?>>Laki-laki</option>
-                    <option value="P" <?= $result['jenis_kelamin'] == 'Perempuan' ? 'selected' : '' ?>>Perempuan</option>
+                    <option value="Laki-laki" <?= $result['jenis_kelamin'] == 'Laki-laki' ? 'selected' : '' ?>>Laki-laki</option>
+                    <option value="Perempuan" <?= $result['jenis_kelamin'] == 'Perempuan' ? 'selected' : '' ?>>Perempuan</option>
                 </select>
             </div>
 

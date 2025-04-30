@@ -4,14 +4,70 @@ $hostname = "db";
 $username = "root";
 $password = "rootpassword";
 $database = "pabd";
-$conn = mysqli_connect($hostname, $username, $password, $database);
+// $conn = mysqli_connect($hostname, $username, $password, $database);
+$conn = new mysqli($hostname, $username, $password, $database);
 if ( !$conn ){
     die( "Failed to connect DB " + mysqli_connect_error() );
 }
 
 
+// function insert_data_dummy() {
+//     global $conn;
+
+
+//     $nama_depan = ['Ahmad', 'Budi', 'Citra', 'Dedi', 'Eka', 'Fitri', 'Gita', 'Hari', 'Indah', 'Joko', 'Kurnia', 'Lutfi', 'Mega', 'Nina', 'Oki', 'Putra', 'Qory', 'Rizki', 'Sari',];
+//     $nama_belakang = ['Saputra', 'Lestari', 'Kurniawan', 'Putri', 'Santoso', 'Dewi', 'Wijaya', 'Maulana', 'Setiawan', 'Pratama', 'Anindita', 'Yuliana', 'Fadilah', 'Hardiansyah'];
+//     $kota = ['Bandung', 'Jakarta', 'Surabaya', 'Yogyakarta', 'Depok', 'Bogor', 'Makassar', 'Medan', 'Palembang', 'Pekanbaru', 'Malang', 'Balikpapan'];
+//     $provinsi = ['Jawa Barat', 'DKI Jakarta', 'Jawa Timur', 'DI Yogyakarta', 'Jawa Tengah', 'Sumatera Utara', 'Sulawesi Selatan', 'Kalimantan Timur'];
+//     $jurusan = ['Teknik Informatika', 'Sistem Informasi', 'Manajemen', 'Akuntansi', 'Teknik Sipil', 'Ilmu Hukum', 'Psikologi', 'Teknik Elektro', 'Desain Komunikasi Visual', 'Kedokteran'];
+//     $jenjang = ['D3', 'S1', 'D4', 'D1'];
+//     $status = ['Aktif', 'Cuti', 'Nonaktif', 'Lulus'];
+//     $jk = ['Laki-laki', 'Perempuan'];
+
+//     for ($i = 1; $i <= 100; $i++) {
+//         $id = uniqid("mhs_");
+//         // $nim = '2023' . str_pad($i, 4, '0', STR_PAD_LEFT);
+//         $nama = $nama_depan[array_rand($nama_depan)] . ' ' . $nama_belakang[array_rand($nama_belakang)];
+//         $alamat = "Jl. " . ucfirst($nama_belakang[array_rand($nama_belakang)]) . " No. " . rand(1, 100);
+//         $kota_rand = $kota[array_rand($kota)];
+//         $prov_rand = $provinsi[array_rand($provinsi)];
+//         $telepon = '08' . rand(1000000000, 9999999999);
+//         $email = strtolower(str_replace(' ', '.', $nama)) . "$i@example.com";
+//         $jurusan_rand = $jurusan[array_rand($jurusan)];
+//         $angkatan = rand(2018, 2024);
+
+//         $nim = $angkatan . str_pad($i, 4, '0', STR_PAD_LEFT);
+    
+//         $jk_rand = $jk[array_rand($jk)];
+//         $tgl_lahir = rand(1997, 2005) . '-' . str_pad(rand(1, 12), 2, '0', STR_PAD_LEFT) . '-' . str_pad(rand(1, 28), 2, '0', STR_PAD_LEFT);
+//         $jenjang_rand = $jenjang[array_rand($jenjang)];
+//         $foto = "foto" . str_pad($i, 2, '0', STR_PAD_LEFT) . ".jpg";
+//         $status_rand = $status[array_rand($status)];
+
+
+//         $stmt = $conn->prepare("INSERT INTO students (
+//             id, nim, nama, alamat, kota, provinsi, telepon, email,
+//             jurusan, angkatan, jenis_kelamin, tanggal_lahir,
+//             jenjang, foto, status
+//         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+//         $stmt->bind_param("sssssssssssssss",
+//             $id, $nim, $nama, $alamat, $kota_rand, $prov_rand, $telepon, $email,
+//             $jurusan_rand, $angkatan, $jk_rand, $tgl_lahir,
+//             $jenjang_rand, $foto, $status_rand
+//         );
+
+//         $stmt->execute();
+//     }
+
+//     echo "50 data mahasiswa berhasil dimasukkan.";
+//     $conn->close();
+// }
+
 function registration($data){
     global $conn;
+
+    $id = bin2hex(random_bytes(16));
 
     $username = strtolower(stripslashes($data["username"]));
     $email = $data["email"];
@@ -26,7 +82,7 @@ function registration($data){
 
 
     //
-    $checkSameUser = mysqli_query($conn, "SELECT * FROM user WHERE email = '$email'");
+    $checkSameUser = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'");
     if ( mysqli_fetch_assoc($checkSameUser) ) {
         echo "
         <script>alert('Username sudah ada, gunakan username lain');</script>
@@ -37,7 +93,7 @@ function registration($data){
     $encrypted_password = password_hash($password, PASSWORD_DEFAULT);
 
 
-    mysqli_query($conn, "INSERT INTO user (username, email, password) VALUES ( '$username', '$email', '$encrypted_password' )");
+    mysqli_query($conn, "INSERT INTO users (id, username, email, password) VALUES ( '$id', '$username', '$email', '$encrypted_password' )");
 
     // return 1;
     // return mysqli_affected_rows($conn);
@@ -56,7 +112,7 @@ function login($data) {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    $email_result = mysqli_query($conn, "SELECT * FROM user WHERE email = '$email'");
+    $email_result = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'");
     // cek username
     // mysqli_num_rows -> mengembalikan jumlah berapa hasil dari query
     if ( mysqli_num_rows($email_result) === 1 ){
@@ -89,7 +145,7 @@ function cek_cookie($data) {
         $key = $_COOKIE["key"];
 
         $email = $data["email"];
-        $result = mysqli_query($conn, "SELECT id, username FROM user WHERE email = '$email'");
+        $result = mysqli_query($conn, "SELECT id, username FROM users WHERE email = '$email'");
         $row = mysqli_fetch_assoc($result);
 
         if ( $key = hash("sha256", $row["username"] . (string) pi() )) {

@@ -12,6 +12,9 @@ if ( !isset($_SESSION["login"]) ){
 }
 
 
+// insert_data_dummy();
+
+
 $total = hitung_jumlah_siswa();
 $jurusan_result = hitung_jumlah_siswa_per_jurusan();
 $gender_result = hitung_jumlah_siswa_per_gender();
@@ -27,7 +30,7 @@ $angkatan_result = hitung_jumlah_mahasiswa_berdasar_angkatan();
 //     }
 // }
 
-$result = tampilkan();
+$result = show_data();
 
 ?>
 
