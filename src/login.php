@@ -21,8 +21,6 @@ if ( isset($_SESSION["login"]) ){
 
 if ( isset($_POST["login"])) {
     if ( !login($_POST) ) {
-        // echo"fepflp";
-        // echo "<script>console.log('HALO')</script>";
         // echo '
         // <script>
         // console.log("TES")

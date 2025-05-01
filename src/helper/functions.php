@@ -95,9 +95,6 @@ function registration($data){
 
     mysqli_query($conn, "INSERT INTO users (id, username, email, password) VALUES ( '$id', '$username', '$email', '$encrypted_password' )");
 
-    // return 1;
-    // return mysqli_affected_rows($conn);
-    var_dump(mysqli_affected_rows($conn));
     $result = mysqli_affected_rows($conn);
     if ($result > 0) {
         return $result;
@@ -210,7 +207,7 @@ function upload_image( $file, $old_image = null) {
     if ( isset($file["name"]) && $file["error"] === UPLOAD_ERR_OK) {
         $filename = $file["name"];
         $filesize = $file["size"];
-        $file_temp = $file["temp_naem"];
+        $file_temp = $file["tmp_name"];
         $file_ext = pathinfo($filename, PATHINFO_EXTENSION);
 
         // check file extension
@@ -227,7 +224,7 @@ function upload_image( $file, $old_image = null) {
         $uploaded_filename = pathinfo($filename, PATHINFO_FILENAME) . "_" . uniqid() . "." . $file_ext;
 
         // UPLOAD FILE
-        $upload_path = __DIR__ . "../uploads/img/";
+        $upload_path = __DIR__ . "/../uploads/img/" . $uploaded_filename;
         if ( move_uploaded_file($file_temp, $upload_path) ) {
             return $uploaded_filename;
         } else {
@@ -241,7 +238,7 @@ function upload_image( $file, $old_image = null) {
         return $old_image;
     }
 
-    return "Tidak ada file yang diupload";
+    // return "Tidak ada file yang diupload";
 } // TODO
 
 
@@ -295,7 +292,7 @@ function add_data($data, $foto) {
     }
 }
 
-function update_data($id, $data, $foto) {
+function update_data($id, $data, $foto = null) {
     //              $data = $_POST, $foto = $_FILES
     global $conn;
 
@@ -340,8 +337,12 @@ function update_data($id, $data, $foto) {
             return 0; // Tidak ada perubahan
     }
         
+    
+    // $img = upload_image($foto);
+
+    var_dump("func UPDATE: $ img:");
+    var_dump($foto);
         
-    $foto = upload_image($foto);
 
     $query = "
         UPDATE students SET
@@ -370,9 +371,12 @@ function update_data($id, $data, $foto) {
 
     // $query .= " WHERE id = '$id'";
 
+
+
     $ret = mysqli_query($conn, $query);
     if ( $ret ) {
-        return mysqli_affected_rows($conn); // 1 if success
+        // return mysqli_affected_rows($conn); // 1 if success
+        return 1;
     } else {
         return -1;
     }

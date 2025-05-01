@@ -10,7 +10,7 @@ if ( !isset($_SESSION["login"]) ){
 }
 
 
-require_once("helper/helper.php");
+require_once("helper/functions.php");
 
 if ( $_SERVER["REQUEST_METHOD"] == "GET")
 {
@@ -20,7 +20,8 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
     }
     
     $id = $_GET['id'];
-    $result = detail($id);
+    $result = get_data_by_id($id);
+    // $result = detail($id);
     
     // Jika data tidak ditemukan
     if (!$result) {
@@ -49,7 +50,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
     
     // Jika user menekan tombol hapus
     if (isset($_GET['confirm']) && $_GET['confirm'] === 'yes') {
-        $del = delete( $id );
+        $del = soft_delete_data( $id );
         if ($del > 0) {
             echo '
             <!DOCTYPE html>
