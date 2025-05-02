@@ -11,59 +11,6 @@ if ( !$conn ){
 }
 
 
-// function insert_data_dummy() {
-//     global $conn;
-
-
-//     $nama_depan = ['Ahmad', 'Budi', 'Citra', 'Dedi', 'Eka', 'Fitri', 'Gita', 'Hari', 'Indah', 'Joko', 'Kurnia', 'Lutfi', 'Mega', 'Nina', 'Oki', 'Putra', 'Qory', 'Rizki', 'Sari',];
-//     $nama_belakang = ['Saputra', 'Lestari', 'Kurniawan', 'Putri', 'Santoso', 'Dewi', 'Wijaya', 'Maulana', 'Setiawan', 'Pratama', 'Anindita', 'Yuliana', 'Fadilah', 'Hardiansyah'];
-//     $kota = ['Bandung', 'Jakarta', 'Surabaya', 'Yogyakarta', 'Depok', 'Bogor', 'Makassar', 'Medan', 'Palembang', 'Pekanbaru', 'Malang', 'Balikpapan'];
-//     $provinsi = ['Jawa Barat', 'DKI Jakarta', 'Jawa Timur', 'DI Yogyakarta', 'Jawa Tengah', 'Sumatera Utara', 'Sulawesi Selatan', 'Kalimantan Timur'];
-//     $jurusan = ['Teknik Informatika', 'Sistem Informasi', 'Manajemen', 'Akuntansi', 'Teknik Sipil', 'Ilmu Hukum', 'Psikologi', 'Teknik Elektro', 'Desain Komunikasi Visual', 'Kedokteran'];
-//     $jenjang = ['D3', 'S1', 'D4', 'D1'];
-//     $status = ['Aktif', 'Cuti', 'Nonaktif', 'Lulus'];
-//     $jk = ['Laki-laki', 'Perempuan'];
-
-//     for ($i = 1; $i <= 100; $i++) {
-//         $id = uniqid("mhs_");
-//         // $nim = '2023' . str_pad($i, 4, '0', STR_PAD_LEFT);
-//         $nama = $nama_depan[array_rand($nama_depan)] . ' ' . $nama_belakang[array_rand($nama_belakang)];
-//         $alamat = "Jl. " . ucfirst($nama_belakang[array_rand($nama_belakang)]) . " No. " . rand(1, 100);
-//         $kota_rand = $kota[array_rand($kota)];
-//         $prov_rand = $provinsi[array_rand($provinsi)];
-//         $telepon = '08' . rand(1000000000, 9999999999);
-//         $email = strtolower(str_replace(' ', '.', $nama)) . "$i@example.com";
-//         $jurusan_rand = $jurusan[array_rand($jurusan)];
-//         $angkatan = rand(2018, 2024);
-
-//         $nim = $angkatan . str_pad($i, 4, '0', STR_PAD_LEFT);
-    
-//         $jk_rand = $jk[array_rand($jk)];
-//         $tgl_lahir = rand(1997, 2005) . '-' . str_pad(rand(1, 12), 2, '0', STR_PAD_LEFT) . '-' . str_pad(rand(1, 28), 2, '0', STR_PAD_LEFT);
-//         $jenjang_rand = $jenjang[array_rand($jenjang)];
-//         $foto = "foto" . str_pad($i, 2, '0', STR_PAD_LEFT) . ".jpg";
-//         $status_rand = $status[array_rand($status)];
-
-
-//         $stmt = $conn->prepare("INSERT INTO students (
-//             id, nim, nama, alamat, kota, provinsi, telepon, email,
-//             jurusan, angkatan, jenis_kelamin, tanggal_lahir,
-//             jenjang, foto, status
-//         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-//         $stmt->bind_param("sssssssssssssss",
-//             $id, $nim, $nama, $alamat, $kota_rand, $prov_rand, $telepon, $email,
-//             $jurusan_rand, $angkatan, $jk_rand, $tgl_lahir,
-//             $jenjang_rand, $foto, $status_rand
-//         );
-
-//         $stmt->execute();
-//     }
-
-//     echo "50 data mahasiswa berhasil dimasukkan.";
-//     $conn->close();
-// }
-
 function registration($data){
     global $conn;
 
@@ -242,11 +189,11 @@ function upload_image( $file, $old_image = null) {
 } // TODO
 
 
-function add_data($data, $foto) {
+function add_data($data, $foto): int {
     //            data $_POST,  image_file $_FILES
     global $conn;
- 
-    $id = bin2hex(random_bytes(16));
+
+    $id = uniqid("mhs_");
  
     $nim = htmlspecialchars($_POST['nim'], ENT_QUOTES, 'UTF-8');
     $nama = htmlspecialchars($_POST['nama'], ENT_QUOTES, 'UTF-8');
@@ -286,7 +233,8 @@ function add_data($data, $foto) {
     );
 
     if ( $result ){
-        return mysqli_affected_rows($conn);
+        // return mysqli_affected_rows($conn);
+        return 1;
     } else {
         return 0;
     }
@@ -337,12 +285,6 @@ function update_data($id, $data, $foto = null) {
             return 0; // Tidak ada perubahan
     }
         
-    
-    // $img = upload_image($foto);
-
-    var_dump("func UPDATE: $ img:");
-    var_dump($foto);
-        
 
     $query = "
         UPDATE students SET
@@ -358,25 +300,21 @@ function update_data($id, $data, $foto = null) {
         jenis_kelamin = '$jenis_kelamin',
         tanggal_lahir = '$tanggal_lahir',
         jenjang = '$jenjang',
-        status = '$status',
-        foto = '$foto'
-        WHERE id = '$id'
-    ";
-
+        status = '$status'
+        ";
 
     // hanya update kolom `foto` jika ada foto baru
-    // if ($foto !== null) {
-    //     $query .= ", foto = '$foto'";
-    // }
+    if ($foto !== null) {
+        $query .= ", foto = '$foto'";
+    }
 
-    // $query .= " WHERE id = '$id'";
+    $query .= " WHERE id = '$id'";
 
 
 
     $ret = mysqli_query($conn, $query);
     if ( $ret ) {
-        // return mysqli_affected_rows($conn); // 1 if success
-        return 1;
+        return mysqli_affected_rows($conn); // 1 if success
     } else {
         return -1;
     }
@@ -487,4 +425,98 @@ function permanent_delete_data( $id ){
     return mysqli_affected_rows($conn);
 }
 
-?>
+// :::::::::: ALERT FUNCTION ----------
+function alert_popup($label_info, $msg, $bg_color, $btn_type, $address_redirect){
+    echo "
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' rel='stylesheet'>
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'></script>
+
+
+    <div class='modal fade' id='alertModal' tabindex='-1' aria-labelledby='alertModalLabel' aria-hidden='true'>
+        <div class='modal-dialog modal-dialog-centered'>
+            <div class='modal-content'>
+                <div class='modal-header bg-$bg_color'>
+                    <h5 class='modal-title' id='alertModalLabel'>$label_info</h5>
+                </div>
+                <div class='modal-body'>
+                <p>$msg</p>
+                </div>
+                <div class='modal-footer'>
+                <a href='$address_redirect'><button type='button' class='btn btn-$btn_type' id='okButton'>OK</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    window.onload = function () {
+    let modal = new bootstrap.Modal(document.getElementById('alertModal'));
+    modal.show();
+    };
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+    // document.getElementById('okButton').addEventListener('click', function () {
+    //     window.location.href = 'index.php';
+    // });
+    });
+    </script>
+    ";
+    // header('Location: $address_redirect');
+}
+
+function page_not_found($redirect_address, $back_to) {
+    echo "
+        <!DOCTYPE html>
+        <html lang='id'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1'>
+            <title>404 - Halaman Tidak Ditemukan</title>
+            <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' rel='stylesheet'>
+            <link href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap' rel='stylesheet'>
+        </head>
+        <body class='d-flex justify-content-center align-items-center vh-100 bg-light' style='font-family: 'Poppins', sans-serif;'>
+            <div class='container text-center'>
+                <div class='p-4 bg-white shadow-lg rounded mx-auto' style='max-width: 450px;'>
+                    <div class='text-danger mb-3 display-1'>🚫</div>
+                    <h2 class='text-dark fw-bold'>HALAMAN TIDAK TERSEDIA</h2>
+                    <p class='text-secondary'>Oops! Halaman yang Anda cari tidak tersedia.</p>
+                    <a href='$redirect_address' class='btn btn-primary fw-bold'>🔙 Kembali ke $back_to</a>
+                </div>
+            </div>
+    
+            <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'></script>
+        </body>
+        </html>
+        ";
+}
+
+
+function data_not_found($redirect_address, $back_to) {
+    echo "
+       <!DOCTYPE html>
+        <html lang='id'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1'>
+            <title>Data Tidak Ditemukan</title>
+            <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' rel='stylesheet'>
+            <link href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap' rel='stylesheet'>
+        </head>
+        <body class='d-flex justify-content-center align-items-center vh-100 bg-light' style='font-family: 'Poppins', sans-serif;'>
+            <div class='container text-center'>
+                <div class='p-4 bg-white shadow-lg rounded mx-auto' style='max-width: 450px;'>
+                    <div class='text-danger mb-3 display-1'>🚫</div>
+                    <h2 class='text-dark fw-bold'>DATA TIDAK DITEMUKAN</h2>
+                    <p class='text-secondary'>Oops! Data yang Anda cari tidak tersedia atau mungkin telah dihapus.</p>
+                    <a href='$redirect_address' class='btn btn-primary fw-bold'>🔙 Kembali ke $back_to</a>
+                </div>
+            </div>
+    
+            <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'></script>
+        </body>
+        </html>
+       ";
+}
+// :::::::::: ALERT FUNCTION ----------

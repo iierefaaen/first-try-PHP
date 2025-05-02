@@ -25,123 +25,18 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
     
     // Jika data tidak ditemukan
     if (!$result) {
-        echo '
-        <!DOCTYPE html>
-        <html lang="id">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Data Tidak Ditemukan</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        </head>
-        <body class="d-flex justify-content-center align-items-center vh-100 bg-light" style="font-family: Poppins, sans-serif;">
-            <div class="container text-center">
-                <div class="p-4 bg-white shadow-lg rounded mx-auto" style="max-width: 450px;">
-                    <div class="text-danger mb-3 display-1">🚫</div>
-                    <h2 class="text-dark fw-bold">DATA TIDAK DITEMUKAN</h2>
-                    <p class="text-secondary">Oops! Data yang Anda cari tidak tersedia atau mungkin telah dihapus.</p>
-                    <a href="index.php" class="btn btn-primary fw-bold">🔙 Kembali ke Beranda</a>
-                </div>
-            </div>
-        </body>
-        </html>';
-        exit();
+        data_not_found("index.php", "Beranda");
+        exit;
     }
     
     // Jika user menekan tombol hapus
     if (isset($_GET['confirm']) && $_GET['confirm'] === 'yes') {
         $del = soft_delete_data( $id );
         if ($del > 0) {
-            echo '
-            <!DOCTYPE html>
-            <html lang="id">
-            <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Data Dihapus</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-            </head>
-            
-            <body>
-            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-            <div class="modal-header bg-success">
-            <h5 class="modal-title" id="successModalLabel">Berhasil</h5>
-            </div>
-            <div class="modal-body">
-            <p>Data berhasil dihapus!</p>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-success" id="okButton">OK</button>
-            </div>
-            </div>
-            </div>
-            </div>
-            
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script>
-            window.onload = function () {
-            let modal = new bootstrap.Modal(document.getElementById("successModal"));
-            modal.show();
-            };
-    
-    
-            document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("okButton").addEventListener("click", function () {
-                window.location.href = "index.php";
-            });
-            });
-            </script>
-            </body>
-            </html>
-            ';
-            exit();
+            alert_popup('Berhasil','Data berhasil dihapus','success', "success", "index.php");
+            exit;
         } else {
-            echo '
-            <!DOCTYPE html>
-            <html lang="id">
-            <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Data Dihapus</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-            </head>
-            
-            
-            <div class="modal fade" id="failedModal" tabindex="-1" aria-labelledby="failedModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-            <div class="modal-header bg-danger">
-            <h5 class="modal-title" id="failedModalLabel">GAGAL</h5>
-            </div>
-            <div class="modal-body">
-            <p>Data gagal dihapus</p>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-danger" id="closeButton">CLOSE</button>
-            </div>
-            </div>
-            </div>
-            </div>
-            
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script>
-            window.onload = function () {
-            let modal = new bootstrap.Modal(document.getElementById("failedModal"));
-            modal.show();
-            };
-    
-    
-            document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("closeButton").addEventListener("click", function () {
-                location.href = "index.php";
-            });
-            });
-            </script>
-            </body>
-            </html>
-            ';
+            alert_popup("Gagal","Data gagal dihapus","danger","danger","");
             exit();
         }
     }
@@ -206,7 +101,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
             </table>
 
             <div class="btn-group-custom">
-                <a href="index.php" class="btn btn-secondary">🔙 Batal</a>
+                <a href="javascript:history.back()" class="btn btn-secondary">🔙 Batal</a>
                 <a href="delete.php?id=<?= $result['id']; ?>&confirm=yes" class="btn btn-danger">🗑️ Ya, Hapus Sekarang</a>
             </div>
         </div>

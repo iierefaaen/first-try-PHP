@@ -13,62 +13,15 @@ require_once("helper/functions.php");
 
 if ( $_SERVER["REQUEST_METHOD"] == "GET")
 {
-    if ( !isset($_GET["id"] ) ) {
-        echo '
-        <!DOCTYPE html>
-        <html lang="id">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>404 - Halaman Tidak Ditemukan</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-        </head>
-        <body class="d-flex justify-content-center align-items-center vh-100 bg-light" style="font-family: "Poppins", sans-serif;">
-            <div class="container text-center">
-                <div class="p-4 bg-white shadow-lg rounded mx-auto" style="max-width: 450px;">
-                    <div class="text-danger mb-3 display-1">🚫</div>
-                    <h2 class="text-dark fw-bold">HALAMAN TIDAK TERSEDIA</h2>
-                    <p class="text-secondary">Oops! Halaman yang Anda cari tidak tersedia.</p>
-                    <a href="index.php" class="btn btn-primary fw-bold">🔙 Kembali ke Beranda</a>
-                </div>
-            </div>
-    
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        </body>
-        </html>
-        ';
+    if ( !isset($_GET["id"]) || empty($_GET['id']) ) {
+        page_not_found("index.php", "Beranda");
         exit;
     }
     $id = $_GET["id"];
-    // $result = detail($id);
     $result = get_data_by_id($id);
 
     if ( !$result ) {
-        echo '
-        <!DOCTYPE html>
-        <html lang="id">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Data Tidak Ditemukan</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-        </head>
-        <body class="d-flex justify-content-center align-items-center vh-100 bg-light" style="font-family: "Poppins", sans-serif;">
-            <div class="container text-center">
-                <div class="p-4 bg-white shadow-lg rounded mx-auto" style="max-width: 450px;">
-                    <div class="text-danger mb-3 display-1">🚫</div>
-                    <h2 class="text-dark fw-bold">DATA TIDAK DITEMUKAN</h2>
-                    <p class="text-secondary">Oops! Data yang Anda cari tidak tersedia atau mungkin telah dihapus.</p>
-                    <a href="index.php" class="btn btn-primary fw-bold">🔙 Kembali ke Beranda</a>
-                </div>
-            </div>
-    
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        </body>
-        </html>
-        ';
+        data_not_found("index.php","Beranda");
         exit();
     }
     
@@ -134,7 +87,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
             </table>
 
             <div class="btn-group-custom">
-                <a href="index.php" class="btn btn-secondary">🔙 Kembali</a>
+                <a href="javascript:history.back()" class="btn btn-secondary">🔙 Kembali</a>
                 <a href="edit.php?id=<?= $result['id']; ?>" class="btn btn-warning">✏️ Edit</a>
                 <a href="delete.php?id=<?= $result['id']; ?>" class="btn btn-danger">🗑️ Hapus</a>
             </div>

@@ -12,30 +12,7 @@ if ( !isset($_SESSION["login"]) ){
 
 if ( $_SERVER["REQUEST_METHOD"] == "GET") {
     if ( !isset($_GET["id"] ) || empty($_GET['id']) ) {
-        echo '
-        <!DOCTYPE html>
-        <html lang="id">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>404 - Halaman Tidak Ditemukan</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-        </head>
-        <body class="d-flex justify-content-center align-items-center vh-100 bg-light" style="font-family: "Poppins", sans-serif;">
-            <div class="container text-center">
-                <div class="p-4 bg-white shadow-lg rounded mx-auto" style="max-width: 450px;">
-                    <div class="text-danger mb-3 display-1">🚫</div>
-                    <h2 class="text-dark fw-bold">HALAMAN TIDAK TERSEDIA</h2>
-                    <p class="text-secondary">Oops! Halaman yang Anda cari tidak tersedia.</p>
-                    <a href="index.php" class="btn btn-primary fw-bold">🔙 Kembali ke Beranda</a>
-                </div>
-            </div>
-    
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        </body>
-        </html>
-        ';
+        page_not_found("index.php", "Beranda");
         exit;
     }
 
@@ -43,32 +20,8 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET") {
     $id = $_GET["id"];
     $result = get_data_by_id($id);
     if ( !$result) {
-       echo '
-       <!DOCTYPE html>
-        <html lang="id">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Data Tidak Ditemukan</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-        </head>
-        <body class="d-flex justify-content-center align-items-center vh-100 bg-light" style="font-family: "Poppins", sans-serif;">
-            <div class="container text-center">
-                <div class="p-4 bg-white shadow-lg rounded mx-auto" style="max-width: 450px;">
-                    <div class="text-danger mb-3 display-1">🚫</div>
-                    <h2 class="text-dark fw-bold">DATA TIDAK DITEMUKAN</h2>
-                    <p class="text-secondary">Oops! Data yang Anda cari tidak tersedia atau mungkin telah dihapus.</p>
-                    <a href="index.php" class="btn btn-primary fw-bold">🔙 Kembali ke Beranda</a>
-                </div>
-            </div>
-    
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        </body>
-        </html>
-       ';
-    
-       exit;
+        data_not_found("index.php", "Beranda");
+        exit;
     }
 }
 
@@ -77,155 +30,40 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET") {
 
 if ( $_SERVER["REQUEST_METHOD"] === "POST") 
 {
-    var_dump( $_POST );
     if (isset($_POST["update"])) {
         $result = get_data_by_id($_GET["id"]);
         $foto = $result["foto"];
-                
-        $ret;
-        var_dump($_FILES["foto"]);
 
         // no photo uploaded
         // use existing
         if($_FILES["foto"]["error"] === 4)
         {
-            // $ret = update_data($_POST["id"],$_POST, $_POST["old-foto"]);
-            $ret = 1;
-            update_data($_GET["id"],$_POST, null);
-            // $ret = upload_photo($_FILES[""]);
+            $ret = update_data($_GET["id"],$_POST, null);
+            if ($ret > 0) {
+                alert_popup("Berhasil", "Data berhasil diperbarui", "success", "success", "index.php");
+            } else if ($ret == 0) {
+                alert_popup("Peringatan", "Data tidak ada yang diubah", "warning", "warning","index.php");
+            } else {
+                alert_popup("Gagal", "Data gagal diperbarui", "danger", "danger", "index.php");
+            }
         }
         
         // new image uploaded
         // handle image
         if ($_FILES["foto"]["error"] === 0) {
-            // $upload = myfunc($_FILES["foto"]);
-            // $photo = upload_photo( $_FILES );
             $photo = upload_image( $_FILES["foto"] );
-            var_dump($photo);
             if ($photo) {
-                $t = update_data($_GET["id"], $_POST, $photo);
-                var_dump("TTTTTTTTTTTTTTTTTT");
-                var_dump($t);
+                $ret = update_data($_GET["id"], $_POST, $photo);
+                if ($ret > 0) {
+                    alert_popup("Berhasil", "Data berhasil diperbarui", "success", "success", "index.php");
+                } else if ($ret == 0) {
+                    alert_popup("Peringatan", "Data tidak ada yang diubah", "warning", "warning", "index.php");
+                } else {
+                    alert_popup("Gagal", "Data gagal diperbarui", "danger", "danger", "index.php");
+                }
             }
         }
-        
-        // TODO : : : : : : : : 
-        // var_dump($ret);
-        // alert success
-        // if ( $ret === 1 ) {
-        //     echo '
-        //     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        //     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    
-        //     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-        //         <div class="modal-dialog modal-dialog-centered">
-        //             <div class="modal-content">
-        //                 <div class="modal-header bg-success">
-        //                     <h5 class="modal-title" id="successModalLabel">Berhasil</h5>
-        //                 </div>
-        //                 <div class="modal-body">
-        //                 Data berhasil disimpan!
-        //                 </div>
-        //                 <div class="modal-footer">
-        //                 <button type="button" class="btn btn-success" id="okButton">OK</button>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </div>
-    
-        //     <script>
-        //     window.onload = function () {
-        //     let modal = new bootstrap.Modal(document.getElementById("successModal"));
-        //     modal.show();
-        //     };
-    
-    
-        //     document.addEventListener("DOMContentLoaded", function () {
-        //     document.getElementById("okButton").addEventListener("click", function () {
-        //         window.location.href = "index.php";
-        //     });
-        //     });
-        //     </script>
-        //     ';
-        //     exit;
-        // } else if ( $ret === 0) { // no change
-        //     echo '
-        //     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        //     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    
-        //     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-        //         <div class="modal-dialog modal-dialog-centered">
-        //             <div class="modal-content">
-        //                 <div class="modal-header bg-warning">
-        //                     <h5 class="modal-title" id="successModalLabel">Peringatan</h5>
-        //                 </div>
-        //                 <div class="modal-body">
-        //                 Data tidak ada yang diperbarui.
-        //                 </div>
-        //                 <div class="modal-footer">
-        //                 <button type="button" class="btn btn-warning" id="okButton">OK</button>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </div>
-    
-        //     <script>
-        //     window.onload = function () {
-        //     let modal = new bootstrap.Modal(document.getElementById("successModal"));
-        //     modal.show();
-        //     };
-    
-    
-        //     document.addEventListener("DOMContentLoaded", function () {
-        //     document.getElementById("okButton").addEventListener("click", function () {
-        //         window.location.href = "index.php";
-        //     });
-        //     });
-        //     </script>
-        //     ';
-        // } else { // failed update
-        //     echo '
-        //     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        //     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    
-        //     <div class="modal fade" id="failedModal" tabindex="-1" aria-labelledby="failedModalLabel" aria-hidden="true">
-        //         <div class="modal-dialog modal-dialog-centered">
-        //             <div class="modal-content">
-        //                 <div class="modal-header bg-danger">
-        //                     <h5 class="modal-title" id="failedModalLabel">GAGAL</h5>
-        //                 </div>
-        //                 <div class="modal-body">
-        //                 Data GAGAL Diperbarui
-        //                 </div>
-        //                 <div class="modal-footer">
-        //                 <button type="button" class="btn btn-danger" id="closeButton">CLOSE</button>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </div>
-    
-        //     <script>
-        //     window.onload = function () {
-        //     let modal = new bootstrap.Modal(document.getElementById("failedModal"));
-        //     modal.show();
-        //     };
-    
-    
-        //     document.addEventListener("DOMContentLoaded", function () {
-        //     document.getElementById("closeButton").addEventListener("click", function () {
-        //         location.href = window.location.href;
-        //     });
-        //     });
-        //     </script>
-    
-        //     ';
-        //     exit;
-        // }
-    }
-     
+    }  
 }
 
 ?>
@@ -366,15 +204,13 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST")
             </select>
             </div>
 
-            <!-- Upload Foto -->
             <div class="mb-3">
                 <label class="form-label">Foto Profil</label>
                 <input type="file" class="form-control" name="foto" id="fotoInput">
             </div>
 
-            <!-- Tombol -->
             <button name="update" type="submit" class="btn btn-primary w-100">Update Data</button>
-            <a href="index.php" class="btn btn-secondary w-100 mt-2">Batal</a>
+            <a href="javascript:history.back()" class="btn btn-secondary w-100 mt-2">Batal</a>
         </form>
     </div>
 </div>

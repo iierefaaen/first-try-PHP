@@ -127,97 +127,13 @@ if ( $_SERVER["REQUEST_METHOD"] == "POST")
             $result = add_data($_POST, $foto);
             if ( $result > 0 ) {
                 // alert when success
-                echo '
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        
-        
-                <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header bg-success">
-                                <h5 class="modal-title" id="successModalLabel">Berhasil</h5>
-                            </div>
-                            <div class="modal-body">
-                            <p>Data berhasil ditambahkan!</p>
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="okButton">OK</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        
-                <script>
-                window.onload = function () {
-                let modal = new bootstrap.Modal(document.getElementById("successModal"));
-                modal.show();
-                };
-        
-        
-                document.addEventListener("DOMContentLoaded", function () {
-                document.getElementById("okButton").addEventListener("click", function () {
-                    window.location.href = "index.php";
-                });
-                });
-                </script>
-                ';
+                alert_popup("Berhasil","Data berhasil ditambahkan","success", "success", "index.php");
+                exit;
             }
         } else {
-            // foreach ($errors as $err) {
-            //     echo "<p style='color:red;'>$err</p>";
-            // }
+            alert_popup("Gagal","Data gagal ditambahkan","danger","danger","add.php");
+            exit;
         }
-
-    
-        // $foto = foto_handlefunc($_FILES);
-        // $foto = upload_photo($_FILES, $_FILES["foto"]["name"], 4);
-        // TODO : commented
-        // $foto = upload_image($_FILES,); 
-
-    
-        // TODO : commented
-        // if ( !$foto ) {
-        //     // alert when  no photo
-        //     echo '
-        //     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        //     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-            
-            
-        //     <div class="modal fade" id="failedModal" tabindex="-1" aria-labelledby="failedModalLabel" aria-hidden="true">
-        //     <div class="modal-dialog modal-dialog-centered">
-        //     <div class="modal-content">
-        //     <div class="modal-header bg-danger">
-        //     <h5 class="modal-title" id="failedModalLabel">GAGAL</h5>
-        //     </div>
-        //     <div class="modal-body">
-        //     <p>Tambahkan Foto</p>
-        //     </div>
-        //     <div class="modal-footer">
-        //     <button type="button" class="btn btn-danger" id="closeButton">CLOSE</button>
-        //     </div>
-        //     </div>
-        //     </div>
-        //     </div>
-            
-        //     <script>
-        //     window.onload = function () {
-        //     let modal = new bootstrap.Modal(document.getElementById("failedModal"));
-        //     modal.show();
-        //     };
-    
-    
-        //     document.addEventListener("DOMContentLoaded", function () {
-        //     document.getElementById("closeButton").addEventListener("click", function () {
-        //         location.href = window.location.href;
-        //     });
-        //     });
-        //     </script>
-        //     ';
-        //     exit;
-        // }
-    
-        
     }
 }
 ?>
@@ -313,8 +229,8 @@ if ( $_SERVER["REQUEST_METHOD"] == "POST")
             <div class="error-kelamin"></div>
                 <label class="form-label">Jenis Kelamin</label>
                 <select name="jenis_kelamin" class="form-select" required>
-                    <option value="L">Laki-laki</option>
-                    <option value="P">Perempuan</option>
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
                 </select>
             </div>
             <div class="mb-3">
@@ -326,10 +242,10 @@ if ( $_SERVER["REQUEST_METHOD"] == "POST")
             <div class="error-jenjang"></div>
                 <label class="form-label">Jenjang</label>
                 <select name="jenjang" class="form-select" required>
+                    <option value="D1">D1</option>
                     <option value="D3">D3</option>
+                    <option value="D4">D4</option>
                     <option value="S1">S1</option>
-                    <option value="S2">S2</option>
-                    <option value="S3">S3</option>
                 </select>
             </div>
             <div class="mb-3">
