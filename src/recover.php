@@ -10,8 +10,7 @@ if ( !isset($_SESSION["login"]) ){
 }
 
 
-require_once("helper/helper.php");
-
+require_once("helper/functions.php");
 $result = get_all_data(true);
 ?>
 
@@ -48,12 +47,13 @@ $result = get_all_data(true);
 </head>
 <body>
 
-<div class="container content">
-<div class="container mt-5">
-            <!-- TODO : -->
-            <?php // TODO : ?>
-            <a href="cari.php" class="btn btn-outline-secondary mb-3 ms-2">🔍 Cari Mahasiswa</a>
-            <?php // TODO ?>
+    <div class="container-fluid content">
+        <div class="mt-5">
+
+            <div class="mb-4 p-3">
+                <input type="text" class="border-success border-2 form-control w-100" id="keyword" placeholder="🔍 Cari mahasiswa berdasarkan Nama | NIM | Jurusan">
+            </div>
+
             
             <div class="table-responsive" id="table-container">
                 <table class="table table-bordered table-striped">
@@ -79,8 +79,8 @@ $result = get_all_data(true);
                             <td data-label="Aksi">
                             <div class="action-buttons d-flex justify-content-center gap-2">
                                 <a href='recoverdetail.php?id=<?php echo $value["id"]; ?>' class='btn btn-info btn-sm'>🔍 Detail</a>
-                                <a href='recoverdata.php?id=<?php echo $value["id"]; ?>' class='btn btn-success btn-sm'>♻️ Pulihkan Data</a>
-                                <a href='permanentdelete.php?id=<?php echo $value["id"]; ?>&confirm=yes' class='btn btn-danger btn-sm'>🗑️ Hapus Permanen</a>
+                                <a href='recoverdata.php?id=<?php echo $value["id"]; ?>' class='btn btn-warning btn-sm'>♻️ Pulihkan Data</a>
+                                <a href='permanentdelete.php?id=<?php echo $value["id"]; ?>' class='btn btn-danger btn-sm'>🗑️ Hapus Permanen</a>
                             </div>
                             </td>
                         </tr>
@@ -91,7 +91,8 @@ $result = get_all_data(true);
                 </table>
             </div>
         </div>
-</div>
+    </div>
 
+<script src="js/script.js"></script>
 </body>
 </html>

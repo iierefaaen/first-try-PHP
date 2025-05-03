@@ -117,7 +117,7 @@ function get_all_data( $is_deleted = false ) {
 
     $ret = array();
     if ( $is_deleted == false) {
-        $result = mysqli_query($conn, "SELECT * FROM students WHERE deleted_at IS NULL");
+        $result = mysqli_query($conn, "SELECT * FROM students WHERE deleted_at IS NULL LIMIT 20");
         foreach ( $result as $key => $value) {
             $ret[$key] = $value;
         }
@@ -339,22 +339,34 @@ function soft_delete_data($id) {
     }
 }
 
-function ajax_search($keyword) {
+function ajax_search($keyword,  $is_deleted = false) {
     global $conn;
-
-
-    $ret = array();
-    $result = mysqli_query($conn, "
-    SELECT * FROM students WHERE
-    deleted_at IS NULL
-    AND (
-    nama LIKE '%$keyword%' OR nim LIKE '%$keyword%' OR jurusan LIKE '%$keyword%'
-    )
-    ");
     
-    foreach ( $result as $key => $value) {
-        $ret[$key] = $value;
+    $ret = array();
+    if ($is_deleted ==  false) {
+        $result = mysqli_query($conn, "
+        SELECT * FROM students WHERE
+        deleted_at IS NULL
+        AND (
+        nama LIKE '%$keyword%' OR nim LIKE '%$keyword%' OR jurusan LIKE '%$keyword%'
+        )
+        ");
+        foreach ( $result as $key => $value) {
+            $ret[$key] = $value;
+        }
+    } else {
+        $result = mysqli_query($conn, "
+        SELECT * FROM students WHERE
+        deleted_at IS NOT NULL
+        AND (
+        nama LIKE '%$keyword%' OR nim LIKE '%$keyword%' OR jurusan LIKE '%$keyword%'
+        )
+        ");
+        foreach ( $result as $key => $value) {
+            $ret[$key] = $value;
+        }
     }
+    
     return $ret;
 }
 
@@ -403,26 +415,30 @@ function hitung_jumlah_mahasiswa_berdasar_status() {
     ");
 }
 
-function recoverdata( $id ) {
+function recover_data( $id ) {
     global $conn;
 
-    mysqli_query($conn, "
+    $result = mysqli_query($conn, "
     UPDATE students SET
     deleted_at = NULL
     WHERE id = '$id'
     ");
 
-    return mysqli_affected_rows($conn);
+    if ( $result ) return 1; else return 0;
+
+    // return mysqli_affected_rows($conn);
 }
 
 function permanent_delete_data( $id ){
     global $conn;
 
-    mysqli_query($conn,"
+    $result = mysqli_query($conn,"
     DELETE FROM students WHERE id = '$id'
     ");
 
-    return mysqli_affected_rows($conn);
+    if ( $result ) return 1; else return 0;
+
+    // return mysqli_affected_rows($conn);
 }
 
 // :::::::::: ALERT FUNCTION ----------

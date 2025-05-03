@@ -15,6 +15,7 @@ $keyword = $_GET["keyword"];
 
 $result = ajax_search($keyword);
 
+
 ?>
 
 <div class="table-responsive" id="table-container">
