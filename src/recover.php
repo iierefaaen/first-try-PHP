@@ -21,6 +21,7 @@ $result = get_all_data(true);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hapus Data Mahasiswa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         .card {
             max-width: 600px;
@@ -49,6 +50,12 @@ $result = get_all_data(true);
 
     <div class="container-fluid content">
         <div class="mt-5">
+            <div class="mb-4 col-12 d-flex justify-content-center">
+                <a href="admin.php" class="btn btn-info d-inline-flex align-items-center gap-2 shadow-sm px-4 py-2 rounded-pill fw-semibold">
+                <i class="bi bi-arrow-left-circle-fill fs-5 text-dark"></i>
+                <span>Kembali</span>
+                </a>
+            </div>
 
             <div class="mb-4 p-3">
                 <input type="text" class="border-success border-2 form-control w-100" id="keyword" placeholder="🔍 Cari mahasiswa berdasarkan Nama | NIM | Jurusan">

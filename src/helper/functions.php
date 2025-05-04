@@ -11,7 +11,7 @@ if ( !$conn ){
 }
 
 
-function registration($data){
+function registration($data, $is_admin = false) {
     global $conn;
 
     $id = bin2hex(random_bytes(16));
@@ -24,7 +24,7 @@ function registration($data){
     // CEK APAKAH PASSWORD DAN CONFIRM PASSWORD SAMA
     if ( $password !== $confirm_password ) {
         echo "<script>alert('Password dan konfirmasi password tidak cocok!');</script>";
-        return -1;
+        return 0;
     }
 
 
@@ -34,19 +34,27 @@ function registration($data){
         echo "
         <script>alert('Username sudah ada, gunakan username lain');</script>
         ";
-        return -1;
+        return 0;
     }
     // ENKRIPSI PASSWORD
     $encrypted_password = password_hash($password, PASSWORD_DEFAULT);
 
 
-    mysqli_query($conn, "INSERT INTO users (id, username, email, password) VALUES ( '$id', '$username', '$email', '$encrypted_password' )");
-
-    $result = mysqli_affected_rows($conn);
-    if ($result > 0) {
-        return $result;
+    if ( $is_admin == true ) {
+        // registration for admin
+        $query = mysqli_query($conn, "INSERT INTO users (id, username, email, password, role) VALUES ( '$id', '$username', '$email', '$encrypted_password', 'admin')");
+        $result = mysqli_affected_rows($conn);
+        if ( $result > 0) {
+            return 1;
+        }
+    } else {
+        // registration for user non admin
+        $query = mysqli_query($conn, "INSERT INTO users (id, username, email, password) VALUES ( '$id', '$username', '$email', '$encrypted_password' )");
+        $result = mysqli_affected_rows($conn);
+        if ( $result > 0) {
+            return 1;
+        }
     }
-
 }
 
 

@@ -17,6 +17,13 @@ if ( !isset($_SESSION["login"]) ){
     <title>Halaman Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+    .card:hover {
+        transform: translateY(-5px);
+        transition: 0.2s ease-in-out;
+        box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    }
+</style>
 </head>
 <body>
 <div class="container mt-5">
@@ -24,17 +31,17 @@ if ( !isset($_SESSION["login"]) ){
     <div class="row justify-content-center g-4">
         
         <!-- Card Menu Admin -->
-        <!-- <div class="col-md-5">
-            <a href="admin.php" class="text-decoration-none">
+        <div class="col-md-5">
+            <a href="admin-menu.php" class="text-decoration-none">
                 <div class="card text-center shadow-sm border-0 rounded-4 h-100 hover-shadow">
                     <div class="card-body py-5">
                         <i class="bi bi-speedometer2 display-4 text-primary mb-3"></i>
-                        <h5 class="card-title">Menu Utama</h5>
-                        <p class="card-text">Kelola data mahasiswa, pengguna, dan fitur utama lainnya.</p>
+                        <h5 class="card-title">Kelola Admin</h5>
+                        <p class="card-text">Kelola admin, pengguna, dan fitur admin lainnya.</p>
                     </div>
                 </div>
             </a>
-        </div> -->
+        </div>
 
         <!-- Card Pulihkan Data -->
         <div class="col-md-5">
@@ -49,16 +56,18 @@ if ( !isset($_SESSION["login"]) ){
             </a>
         </div>
 
+
+        <div class="col-12 d-flex justify-content-center">
+            <a href="index.php" class="btn btn-info d-inline-flex align-items-center gap-2 shadow-sm px-4 py-2 rounded-pill fw-semibold">
+            <i class="bi bi-arrow-left-circle-fill fs-5 text-dark"></i>
+            <span>Kembali</span>
+            </a>
+        </div>
+
+
     </div>
 </div>
 
-<style>
-    .card:hover {
-        transform: translateY(-5px);
-        transition: 0.2s ease-in-out;
-        box-shadow: 0 0 15px rgba(0,0,0,0.15);
-    }
-</style>
 
 </body>
 </html>
