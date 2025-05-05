@@ -27,15 +27,14 @@ $result = show_data();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body class="bg-light">
-
-    <div class="p-5 container-fluid min-vh-100 d-flex flex-column justify-content-center align-items-center py-5">
+    <div class="container-fluid min-vh-100 py-5">
         <div class="w-100 px-3">
             <h2 class="text-center mb-4">📋 Data Mahasiswa</h2>
             <div class="mb-1 p-1 bg-info mb-3">
                     <input type="text" class="ps-4 border-2 border-bottom border-info form-control" id="keyword" placeholder="🔍 Cari mahasiswa berdasarkan Nama | NIM | Jurusan" autofocus>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive" id="table-container">
                 <table class="table table-bordered table-striped">
                     <thead class="table-dark">
                         <tr>
@@ -64,5 +63,6 @@ $result = show_data();
         </div>
     </div>
 
+<script src="js/script2.js"></script>
 </body>
 </html>

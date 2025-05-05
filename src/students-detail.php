@@ -36,6 +36,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "GET")
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Mahasiswa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body class="bg-light">
 
@@ -73,8 +74,11 @@ if ( $_SERVER["REQUEST_METHOD"] === "GET")
                         </tr>
                     </table>
 
-                    <div class="d-flex justify-content-center mt-4">
-                        <a href="javascript:history.back()" class="btn btn-secondary">🔙 Kembali</a>
+                    <div class="mb-4 col-12 d-flex justify-content-center">
+                        <a href="students.php" class="btn btn-info d-inline-flex align-items-center gap-2 shadow-sm px-4 py-2 rounded-pill fw-semibold">
+                        <i class="bi bi-arrow-left-circle-fill fs-5 text-dark"></i>
+                        <span>Kembali</span>
+                        </a>
                     </div>
                 </div>
             </div>
