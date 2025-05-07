@@ -12,6 +12,14 @@ if ( !isset($_SESSION["login"]) ){
 
 require_once("helper/functions.php");
 
+// !check_role => user
+// used for admin page
+if ( !check_role() ) {
+    header("Location: students.php");
+    exit;
+}
+
+
 if ( $_SERVER["REQUEST_METHOD"] == "GET")
 {
     if ( !isset($_GET['id']) || empty($_GET['id']) ) {
@@ -74,7 +82,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET")
     </style>
 </head>
 <body>
-
+<?php include_once("helper/admin-navbar.php"); ?>
 <div class="container">
     <div class="card">
         <div class="card-header text-center bg-warning text-white">

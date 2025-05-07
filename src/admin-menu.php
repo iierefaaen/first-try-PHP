@@ -6,6 +6,16 @@ if ( !isset($_SESSION["login"]) ){
     header('Location: login.php');
     exit;
 }
+
+require_once("helper/functions.php");
+
+// !check_role => user
+// used for admin page
+if ( !check_role() ) {
+    header("Location: students.php");
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -25,6 +35,7 @@ if ( !isset($_SESSION["login"]) ){
 </style>
 </head>
 <body>
+<?php include_once("helper/admin-navbar.php"); ?>
 
 <div class="container mt-5">
     <div class="row g-4">

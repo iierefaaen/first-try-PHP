@@ -11,6 +11,16 @@ if ( !isset($_SESSION["login"]) ){
 
 require_once("helper/functions.php");
 
+// check_role === true => role === admin
+// redirect to admin page : index.php
+// use this for user page only
+if ( check_role() ) {
+    header("Location: index.php");
+    exit;
+}
+
+
+
 if ( $_SERVER["REQUEST_METHOD"] === "GET")
 {
     if ( !isset($_GET["id"]) || empty($_GET['id']) ) {
@@ -39,7 +49,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "GET")
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body class="bg-light">
-
+<?php include_once("helper/user-navbar.php"); ?>
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">

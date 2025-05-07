@@ -11,7 +11,15 @@ if ( !isset($_SESSION["login"]) ){
 }
 
 require_once("helper/functions.php");
-// $result = show_data();
+
+// !check_role => user
+// used for admin page
+if ( !check_role() ) {
+    header("Location: students.php");
+    exit;
+}
+
+
 $result = get_all_data(false);
 
 ?>
@@ -27,7 +35,7 @@ $result = get_all_data(false);
     <title>Cari Data Mahasiswa</title>
 </head>
 <body class="bg-light">
-
+<?php include_once("helper/admin-navbar.php"); ?>
     <div class="container py-4">
         <div class="col-12 d-flex justify-content-center">
             <a href="index.php" class="btn btn-info d-inline-flex align-items-center gap-2 shadow-sm px-4 py-2 rounded-pill fw-semibold">

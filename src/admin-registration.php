@@ -9,6 +9,13 @@ if ( !isset($_SESSION["login"]) ){
 
 require_once("helper/functions.php");
 
+// !check_role => user
+// used for admin page
+if ( !check_role() ) {
+    header("Location: students.php");
+    exit;
+}
+
 function print_error($msg, $dom_element) {
     echo "
         <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' rel='stylesheet'>
@@ -93,7 +100,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-
+<?php include_once("helper/admin-navbar.php"); ?>
     <div class="container py-3">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6 col-xl-4">

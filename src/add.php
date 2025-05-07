@@ -1,11 +1,18 @@
 <?php
-
-
 session_start();
 // jika tidak ada session == belum login
 if ( !isset($_SESSION["login"]) ){
     // WARNING : don't add white space after Location, or will be error
     header('Location: login.php');
+    exit;
+}
+
+require_once("helper/functions.php");
+
+// !check_role => user
+// used for admin page
+if ( !check_role() ) {
+    header("Location: students.php");
     exit;
 }
 
@@ -28,7 +35,6 @@ function print_error($msg, $dom_element) {
 
 
 
-require_once("helper/functions.php");
 
 
 if ( $_SERVER["REQUEST_METHOD"] == "POST")
@@ -177,6 +183,9 @@ if ( $_SERVER["REQUEST_METHOD"] == "POST")
     </style>
 </head>
 <body>
+
+    <?php include_once("helper/admin-navbar.php"); ?>
+
     <div class="container">
         <h2>Tambah Mahasiswa</h2>
         <form action="" method="post" enctype="multipart/form-data">

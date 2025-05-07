@@ -11,6 +11,16 @@ if ( !isset($_SESSION["login"]) ){
 require_once("helper/functions.php");
 
 
+// check_role === true => role === admin
+// redirect to admin page : index.php
+// use this for user page only
+if ( check_role() ) {
+    header("Location: index.php");
+    exit;
+}
+
+
+
 $keyword = $_GET["keyword"];
 
 $result = ajax_search($keyword);

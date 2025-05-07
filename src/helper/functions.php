@@ -71,8 +71,8 @@ function login($data) {
         // data dari db
         $result = mysqli_fetch_assoc($email_result);
         // check password
-        $login_cek = password_verify($password, $result["password"] );
-        if ( !$login_cek ){
+        $login_check = password_verify($password, $result["password"] );
+        if ( !$login_check ){
             return false;
         } else {
             // cek remember me ditekan
@@ -84,6 +84,13 @@ function login($data) {
             setcookie("key", $cookie_key, time() + 60, secure: true);
             }
         // return $_SESSION["login] -=>> true;
+        $role = $result["role"];
+        if ( $role === "user")
+        {
+            $_SESSION["role"] = "user";
+        } else {
+            $_SESSION["role"] = "admin";
+        }
         return true;
 
         }
@@ -544,3 +551,23 @@ function data_not_found($redirect_address, $back_to) {
        ";
 }
 // :::::::::: ALERT FUNCTION ----------
+
+
+function login_redirect(){
+    if ( $_SESSION["role"] !== "admin" )
+    {
+        header("Location: students.php");
+        exit;
+    } else
+    {
+        header("Location: index.php");
+        exit;
+    }
+    
+}
+
+function check_role()
+{
+    if ( $_SESSION["role"] === "user" ) return false;
+    return true;
+}

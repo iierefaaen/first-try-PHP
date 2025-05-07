@@ -10,6 +10,13 @@ if ( !isset($_SESSION["login"]) ){
 
 require_once("helper/functions.php");
 
+// !check_role => user
+// used for admin page
+if ( !check_role() ) {
+    header("Location: students.php");
+    exit;
+}
+
 
 $keyword = $_GET["keyword"];
 

@@ -11,6 +11,14 @@ if ( !isset($_SESSION["login"]) ){
 
 
 require_once("helper/functions.php");
+
+// !check_role => user
+// used for admin page
+if ( !check_role() ) {
+    header("Location: students.php");
+    exit;
+}
+
 $result = get_all_data(true);
 ?>
 
@@ -47,7 +55,7 @@ $result = get_all_data(true);
     </style>
 </head>
 <body>
-
+<?php include_once("helper/admin-navbar.php"); ?>
     <div class="container-fluid content">
         <div class="mt-5">
             <div class="mb-4 col-12 d-flex justify-content-center">

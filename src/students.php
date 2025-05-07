@@ -11,6 +11,14 @@ if ( !isset($_SESSION["login"]) ){
     exit;
 }
 
+// check_role === true => role === admin
+// redirect to admin page : index.php
+// use this for user page only
+if ( check_role() ) {
+    header("Location: index.php");
+    exit;
+}
+
 
 $result = show_data();
 
@@ -27,6 +35,7 @@ $result = show_data();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body class="bg-light">
+<?php include_once("helper/user-navbar.php"); ?>
     <div class="container-fluid min-vh-100 py-5">
         <div class="w-100 px-3">
             <h2 class="text-center mb-4">📋 Data Mahasiswa</h2>

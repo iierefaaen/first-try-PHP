@@ -10,6 +10,14 @@ if ( !isset($_SESSION["login"]) ){
     exit;
 }
 
+// !check_role => user
+// used for admin page
+if ( !check_role() ) {
+    header("Location: students.php");
+    exit;
+}
+
+
 if ( $_SERVER["REQUEST_METHOD"] == "GET") {
     if ( !isset($_GET["id"] ) || empty($_GET['id']) ) {
         page_not_found("index.php", "Beranda");
@@ -117,7 +125,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST")
     </style>
 </head>
 <body>
-
+<?php include_once("helper/admin-navbar.php"); ?>
 <div class="container mt-5">
     <div class="card">
         <h3 class="text-center">Edit Data Mahasiswa</h3>
