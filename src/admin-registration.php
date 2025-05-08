@@ -75,17 +75,6 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
     }
-
-    // if ( isset( $_POST["submit"]) ){
-    //     $result = registration($_POST, true);
-    //     if ( $result === 1){
-    //         alert_popup("Registrasi Berhasil","Registrasi admin berhasil","success", "success", "admin-menu.php");
-    //         exit;
-    //     } else {
-    //         alert_popup("Registrasi Gagal","Registrasi admin gagal","danger", "danger", "admin-registration.php");
-    //         exit;
-    //     }
-    // }
 }
 
 
@@ -98,6 +87,12 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah User Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
 </head>
 <body class="bg-light">
 <?php include_once("helper/admin-navbar.php"); ?>

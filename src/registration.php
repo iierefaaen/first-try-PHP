@@ -28,6 +28,13 @@ if (isset($_POST["register"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrasi</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100 px-4">
     <div class="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-2xl">

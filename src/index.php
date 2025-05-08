@@ -55,26 +55,6 @@ $result = show_data();
             font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
         }
-        /*
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background: #212529;
-            color: white;
-            position: fixed;
-            padding-top: 20px;
-        }
-        .sidebar a {
-            color: white;
-            padding: 12px;
-            display: block;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-        .sidebar a:hover {
-            background: #343a40;
-        }
-        */
         .border-left-primary {
             border-left: .25rem solid #4e73df !important;
         }
@@ -93,12 +73,6 @@ $result = show_data();
         .text-gray-300 {
             color: #dddfeb !important;
         }
-        /* 
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-        */
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -154,31 +128,7 @@ $result = show_data();
 
     <?php include_once("helper/admin-navbar.php"); ?>
 
-    <!-- <div class="sidebar">
-        <h4 class="text-center">📌 Manajemen Mahasiswa</h4>
-        <a href="#">🏠 Dashboard</a>
-        <a href="#">📋 Data Mahasiswa</a>
-        <a href="#">⚙️ Pengaturan</a>
-        <a href="logout.php">🚪 Logout</a>
-    </div> -->
-
     <div class="content m-5">
-
-        <!-- <div class="container mt-3 mb-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card shadow-lg border-0 rounded-4">
-                        <div class="card-body text-center py-5">
-                            <h4 class="card-title mb-4 text-primary">Panel Admin</h4>
-                            <p class="card-text mb-4">Akses pengelolaan data, manajemen user, dan fitur admin lainnya.</p>
-                            <a href="admin.php" class="btn btn-primary px-4 py-2">
-                                <i class="bi bi-speedometer2 me-2"></i> Menu Admin
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
 
         <!-- STATISTIK -->
          <!-- Start 3 row -->
@@ -239,7 +189,7 @@ $result = show_data();
                             <?php foreach ($status_result as $sr): ?>
                                 <div class="d-flex justify-content-between align-items-center h6 fw-bold mb-0 text-gray-800">
                                     <span><?= ucfirst(htmlspecialchars($sr['status'])) ?></span>
-                                    <span class="mb-1 badge rounded-pill bg-warning text-dark px-2 py-1">
+                                    <span class="mb-1 badge bg-warning rounded-pill text-dark px-2 py-1">
                                         <?= $sr['total'] ?>
                                     </span>
                                 </div>
@@ -253,7 +203,7 @@ $result = show_data();
         </div>
         <!-- End 3 row -->
 
-            <!-- Mahasiswa per Jurusan -->
+        <!-- Mahasiswa per Jurusan -->
         <div class="col-md-12 mb-4">
             <div class="card shadow-lg border-0 rounded-4 " style="background: linear-gradient(to right, #e3f2fd,rgb(70, 221, 241));">
                 <div class="card-body">
@@ -276,7 +226,7 @@ $result = show_data();
             </div>
         </div>
 
-            <!-- BERDASAR ANGKATAN -->
+        <!-- BERDASAR ANGKATAN -->
         <div class="col-md-12 mb-4">
             <div class="card shadow-lg border-0 rounded-4" style="background: linear-gradient(to right, #f1f8e9, #dcedc8);">
                 <div class="card-body">
@@ -301,50 +251,6 @@ $result = show_data();
 
         
 
-    </div> <!-- END STATISTIK -->
-
-
-    <!-- <div class="container mt-5">
-        <h2 class="mb-4">📋 Data Mahasiswa</h2>
-        <a href="add.php" class="btn btn-primary mb-3">➕ Tambah Mahasiswa</a>
-        <a href="cari.php" class="btn btn-outline-secondary mb-3 ms-2">🔍 Cari Mahasiswa</a>
-        
-        <div class="table-responsive" id="table-container">
-            <table class="table table-bordered table-striped">
-                <thead class="table-dark">
-                    <tr>
-                        <th>No</th>
-                        <th>NIM</th>
-                        <th>Nama</th>
-                        <th>Jurusan</th>
-                        <th class="text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $counter = 1;
-                    foreach( $result as $key => $value ) {
-                    ?>
-                    <tr>
-                        <td data-label="No"><?php echo $counter; $counter++; ?></td>
-                        <td data-label="NIM"><?php echo $value["nim"]; ?></td>
-                        <td data-label="Nama"><?php echo $value["nama"]; ?></td>
-                        <td data-label="Jurusan"><?php echo $value["jurusan"]; ?></td>
-                        <td data-label="Aksi">
-                        <div class="action-buttons">
-                            <a href='detail.php?id=<?php echo $value["id"]; ?>' class='btn btn-info btn-sm'>🔍 Detail</a>
-                            <a href='edit.php?id=<?php echo $value["id"]; ?>' class='btn btn-warning btn-sm'>✏️ Edit</a>
-                            <a href='delete.php?id=<?php echo $value["id"]; ?>' class='btn btn-danger btn-sm'>🗑️ Hapus</a>
-                        </div>
-                        </td>
-                    </tr>
-                    <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-    </div> -->
-    
+    </div> <!-- END STATISTIK -->   
 </body>
 </html>
